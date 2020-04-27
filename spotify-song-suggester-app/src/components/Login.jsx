@@ -3,8 +3,6 @@ import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
@@ -19,7 +17,7 @@ function Copyright() {
     <Typography variant="body2" color="textSecondary" align="center">
       {'Copyright © '}
       <Link color="inherit" href="https://material-ui.com/">
-        Your Website
+        Spotify Suggestor
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
@@ -58,7 +56,15 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-export default function SignIn() {
+export default function SignIn(props) {
+  const {
+    values,
+    onSubmit,
+    disabled,
+    errors,
+    onInputChange,
+} = props
+
   const classes = useStyles();
 
   return (
@@ -82,6 +88,8 @@ export default function SignIn() {
             name="username"
             autoComplete="username"
             autoFocus
+            value={values.username}
+            onChange={onInputChange}
           />
           <TextField
             variant="outlined"
@@ -93,17 +101,18 @@ export default function SignIn() {
             type="password"
             id="password"
             autoComplete="current-password"
+            value={values.password}
+            onChange={onInputChange}
           />
-          <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
-          />
+         
           <Button
             type="submit"
             fullWidth
             variant="contained"
-            color="primary"
+            color="inherit"
             className={classes.submit}
+            onClick={onSubmit}
+
           >
             Log In
           </Button>

@@ -4,13 +4,15 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import {BrowserRouter  as Router} from 'react-router-dom'
-
+import { ThemeProvider } from '@material-ui/core/styles'
+import appTheme from './themes'
 render(
 
-  
+    <ThemeProvider theme={appTheme}>
     <Router >
     <App />
     </Router>
+    </ThemeProvider>
   
 
   , document.getElementById('root')
