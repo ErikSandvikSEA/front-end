@@ -17,12 +17,15 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Link from '@material-ui/core/Link';
+import { positions } from '@material-ui/system';
+import { flexbox } from '@material-ui/system';
 
 
 import { v4 as uuid } from 'uuid'
 
 
-const url = 'https://reqres.in/api/users'
+const postUrl = 'https://reqres.in/api/users'
+const getUrl='https://api.github.com/users/octocat'
 
 
 const initialFormValues = {
@@ -99,8 +102,36 @@ export default function App() {
   const [formErrors, setFormErrors] = useState(initialFormErrors)
   const [formDisabled, setFormDisabled] = useState(true)
 
+
+  const getUser = user => {
+    axios.get(getUrl, user)
+    .then(res => {
+      console.log(res)
+      setUsers(res.data)
+    })
+    .catch(err => {
+      console.log('error')
+    })
+  }
+
+  const onLogin = e => {
+    e.preventDefault()
+
+    const newUser = {
+      name: users.login,
+      email: users.email,
+
+    }
+
+    // 🔥 STEP 6 - WE NEED TO POST NEW USER TO THE API!
+    getUser(newUser)
+    setFormValues(initialFormValues)
+    console.log(newUser)
+  }
+
+
   const postUser = user => {
-    axios.post(url, user)
+    axios.post(postUrl, user)
       .then(res => {
         console.log(res)
         setUsers([...users, res.data])
@@ -118,7 +149,7 @@ export default function App() {
   }, [formValues])
 
 
-  const onSubmit = e => {
+  const onSignUp = e => {
     e.preventDefault()
 
     const newUser = {
@@ -164,48 +195,44 @@ export default function App() {
 
     <div className="App">
       <CssBaseline />
-      <AppBar position="relative" className='appBar'>
+      <AppBar position="sticky" className='appBar'>
+        
+       
         <Toolbar  className='appBar'>
           <Headset className={classes.icon} />
           
           <Route path='/'>
         <RouterLink color="secondary"to='/'>
-          <Typography variant="h6" color="secondary" noWrap>
+          <Typography className={classes.title} variant="h6" color="secondary" noWrap>
             Home
             </Typography>
             </RouterLink>
         </Route>
           <Route>
-        <RouterLink color="secondary"to='/'>
+        <RouterLink color="secondary"to='/login'>
           <Typography variant="h6" color="secondary" noWrap>
             Login
             </Typography>
             </RouterLink>
         </Route>
         <Route>
-        <RouterLink color="secondary"to='/'>
+        <RouterLink color="secondary"to='/signup'>
           <Typography variant="h6" color="secondary" noWrap>
             Sign Up
             </Typography>
             </RouterLink>
         </Route>
+
         </Toolbar>
       </AppBar>
-      <Button variant="contained" color="primary">
-      Hello World
-    </Button>
-    <header>
-      <h1>Spotify Suggester</h1>
-      <Route path='/'>
-        <Link to='/'>Home</Link>
-        </Route>
-        </header>
+    
+    
         
     <Switch>
       <Route path='/signup'>
         <SignUp
           values={formValues}
-          onSubmit={onSubmit}
+          onSignUp={onSignUp}
           disabled={formDisabled}
           errors={formErrors}
           onInputChange={onInputChange}
@@ -217,7 +244,7 @@ export default function App() {
       <Route path='/login'>
            <Login
             values={formValues}
-            onSubmit={onSubmit}
+            onLogin={onLogin}
             onInputChange={onInputChange}
            />
       </Route>
