@@ -10,15 +10,14 @@ import DisplaySearched from './components/DisplaySearched'
 
 import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
-import Headset from '@material-ui/icons/Headset';import CssBaseline from '@material-ui/core/CssBaseline';
+import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Link from '@material-ui/core/Link';
-import { positions } from '@material-ui/system';
-import { flexbox } from '@material-ui/system';
+import MenuTab from './components/menuComponents/MenuTab'
 
 
 import { v4 as uuid } from 'uuid'
@@ -103,31 +102,19 @@ export default function App() {
   const [formDisabled, setFormDisabled] = useState(true)
 
 
-  const getUser = user => {
-    axios.get(getUrl, user)
-    .then(res => {
-      console.log(res)
-      setUsers(res.data)
-    })
-    .catch(err => {
-      console.log('error')
-    })
-  }
-
-  const onLogin = e => {
-    e.preventDefault()
-
-    const newUser = {
-      name: users.login,
-      email: users.email,
-
-    }
-
-    // 🔥 STEP 6 - WE NEED TO POST NEW USER TO THE API!
-    getUser(newUser)
-    setFormValues(initialFormValues)
-    console.log(newUser)
-  }
+  useEffect(() => {
+    
+    axios.get(getUrl)
+      .then(response => {
+        // console.log('working')
+        console.log(response.data)
+        setUsers(response.data)
+      })
+      .catch(err => {
+        console.log('error')
+      })
+  }, []
+  )
 
 
   const postUser = user => {
@@ -199,7 +186,7 @@ export default function App() {
         
        
         <Toolbar  className='appBar'>
-          <Headset className={classes.icon} />
+        <MenuTab/>
           
           <Route path='/'>
         <RouterLink color="secondary"to='/'>
@@ -211,7 +198,7 @@ export default function App() {
           <Route>
         <RouterLink color="secondary"to='/login'>
           <Typography variant="h6" color="secondary" noWrap>
-            Login
+            Log In
             </Typography>
             </RouterLink>
         </Route>
@@ -244,7 +231,6 @@ export default function App() {
       <Route path='/login'>
            <Login
             values={formValues}
-            onLogin={onLogin}
             onInputChange={onInputChange}
            />
       </Route>

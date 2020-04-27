@@ -9,6 +9,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Link from '@material-ui/core/Link';
 import DisplaySearched from './DisplaySearched'
+import { Route, Switch } from 'react-router-dom'
+import {Link as RouterLink } from 'react-router-dom'
+import TextField from '@material-ui/core/TextField';
 
 
 
@@ -58,6 +61,15 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor:'#1DB954',
     padding: theme.spacing(6),
   },
+  searchButtons: {
+       textDecoration: 'none',
+  },
+  root: {
+     '& > *': {
+       margin: theme.spacing(1),
+       width: '25ch',
+     },
+   },
 }));
 
 
@@ -66,37 +78,47 @@ export default function HomePage() {
 
   return (
     <React.Fragment>
+         
 
       <main>
         {/* Hero unit */}
         <div className={classes.heroContent}>
           <Container maxWidth="sm">
             <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
-              Album layout
+              Spotify Song Suggester
             </Typography>
             <Typography variant="h5" align="center" color="textSecondary" paragraph>
-              Something short and leading about the collection below—its contents, the creator, etc.
-              Make it short and sweet, but not too short so folks don&apos;t simply skip over it
-              entirely.
+             Search for new music - the smart way
             </Typography>
+            
             <div className={classes.heroButtons}>
               <Grid container spacing={2} justify="center">
                 <Grid item>
-                  <Button variant="contained" color="primary">
-                    Main call to action
+                <RouterLink className='searchButtons' to='/search'>
+                  <Button className='searchButtons' variant="contained" color="primary">
+                    Search For New Songs
                   </Button>
+                  </RouterLink>
+                  
                 </Grid>
                 <Grid item>
                   <Button variant="outlined" color="primary">
                     Secondary action
                   </Button>
                 </Grid>
+                <form className={classes.root} noValidate autoComplete="off">
+      
+      <TextField id="outlined-basic" label="Search Artist" variant="outlined" />
+      <TextField id="outlined-basic" label="Search Song Title" variant="outlined" />
+    </form>
               </Grid>
             </div>
           </Container>
         </div>
         {/* end hero unit */}
+        <Route path='/search'>
         <DisplaySearched />
+        </Route>
       </main>
       {/* Footer */}
       <footer className={classes.footer} >
@@ -112,3 +134,5 @@ export default function HomePage() {
     </React.Fragment>
   );
 }
+
+

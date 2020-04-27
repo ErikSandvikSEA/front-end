@@ -59,7 +59,7 @@ const useStyles = makeStyles((theme) => ({
 export default function SignIn(props) {
   const {
     values,
-    onLogin,
+
     disabled,
     errors,
     onInputChange,
@@ -111,7 +111,7 @@ export default function SignIn(props) {
             variant="contained"
             color="inherit"
             className={classes.submit}
-            onClick={onLogin}
+
 
           >
             Log In
