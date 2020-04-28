@@ -5,7 +5,7 @@ const UpdateUser = () => {
 
     return (
         <div>
-            <h2>Update Your Information Below</h2>
+            <h2>Update Your Information Below!</h2>
         </div>
     )
 }
