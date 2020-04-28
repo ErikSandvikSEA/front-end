@@ -27,6 +27,8 @@ import { v4 as uuid } from 'uuid'
 const postUrl = 'https://reqres.in/api/users'
 const getUrl='https://api.github.com/users/octocat'
 
+const registerTestUrl = 'https://spotify-song-suggester-project.herokuapp.com/api/auth/register'
+
 
 const initialFormValues = {
   ///// TEXT INPUTS /////
@@ -63,6 +65,12 @@ const formSchema = yup.object().shape({
 const useStyles = makeStyles((theme) => ({
   appBar: {
      backgroundColor: '#1DB954',
+     display: 'flex',
+     justifyContent: 'space-between',
+     width: '100%',
+     alignItems: 'center',
+     paddingLeft: '2%',
+     paddingRight: '2%',
   },
   icon: {
     marginRight: theme.spacing(2),
@@ -93,6 +101,9 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor:'#1DB954',
     padding: theme.spacing(6),
   },
+  linkButtons: {
+    textDecoration: 'none',
+  }
 }));
 
 
@@ -108,7 +119,7 @@ export default function App() {
     axios.get(getUrl)
       .then(response => {
         // console.log('working')
-        console.log(response.data)
+        // console.log(response.data)
         setUsers(response.data)
       })
       .catch(err => {
@@ -118,10 +129,11 @@ export default function App() {
   )
 
 
-  const postUser = user => {
+  const postUser = (user) => {
     axios.post(postUrl, user)
       .then(res => {
         console.log(res)
+        console.log('working')
         setUsers([...users, res.data])
       })
       .catch(err => {
@@ -141,14 +153,14 @@ export default function App() {
     e.preventDefault()
 
     const newUser = {
-      name: formValues.name,
+      username: formValues.username,
       email: formValues.email,
       password: formValues.password,
     }
 
     // 🔥 STEP 6 - WE NEED TO POST NEW USER TO THE API!
     postUser(newUser)
-    setFormValues(initialFormValues)
+    // setFormValues(initialFormValues)
   }
 
   const onInputChange = e => {
@@ -183,40 +195,54 @@ export default function App() {
 
     <div className="App">
       <CssBaseline />
-      <AppBar position="sticky" className='appBar'>
+      <AppBar position="sticky">
         
        
-        <Toolbar  className='appBar'>
+        <Toolbar>
         <MenuTab/>
+          <div className={classes.appBar}>
+          <Button>
+        <RouterLink color="secondary" to='/home' className={classes.linkButtons}>
           
-          <Route path='/'>
-        <RouterLink color="secondary"to='/'>
-          <Typography className={classes.title} variant="h6" color="secondary" noWrap>
+          <Typography variant="h6" color="secondary" noWrap >
             Home
             </Typography>
+            
             </RouterLink>
-        </Route>
-          <Route>
-        <RouterLink color="secondary"to='/login'>
-          <Typography variant="h6" color="secondary" noWrap>
+            </Button>
+        <div>
+        <Button>
+        <RouterLink color="secondary"to='/' className={classes.linkButtons}>
+          <Typography className={classes.title} variant="h6" color="secondary" noWrap>
             Log In
             </Typography>
             </RouterLink>
-        </Route>
-        <Route>
-        <RouterLink color="secondary"to='/signup'>
+            </Button>
+
+            <Button>
+        <RouterLink color="secondary" to='/signup' className={classes.linkButtons}>
           <Typography variant="h6" color="secondary" noWrap>
             Sign Up
             </Typography>
             </RouterLink>
-        </Route>
-
+            </Button>
+            </div>
+            </div>
         </Toolbar>
       </AppBar>
-    
-    
+  
+      
+      
         
     <Switch>
+
+    <Route exact path='/'>
+           <Login
+            values={formValues}
+            onInputChange={onInputChange}
+           />
+      </Route>
+
       <Route path='/signup'>
         <SignUp
           values={formValues}
@@ -227,18 +253,13 @@ export default function App() {
         
         />
       </Route>
-
-
-      <Route path='/login'>
-           <Login
-            values={formValues}
-            onInputChange={onInputChange}
-           />
-      </Route>
-
+>
       <Route>
-        <HomePage path='/' />
+        <HomePage path='/home' />
       </Route>
+
+
+      
     
  </Switch>
 

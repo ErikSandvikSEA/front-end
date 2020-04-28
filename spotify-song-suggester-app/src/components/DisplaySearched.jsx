@@ -1,4 +1,4 @@
-import React, { useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
@@ -12,6 +12,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Link from '@material-ui/core/Link';
 import axios from 'axios'
+import CircularProgress from '@material-ui/core/CircularProgress';
+
 
 
 const useStyles = makeStyles((theme) => ({
@@ -45,10 +47,17 @@ const useStyles = makeStyles((theme) => ({
           backgroundColor: '#1DB954',
           padding: theme.spacing(6),
      },
+     root: {
+          display: 'flex',
+          justifyContent: 'center',
+          '& > * + *': {
+               marginLeft: theme.spacing(0),
+          },
+     },
 }));
 
 const cards = [1, 2, 3, 4, 5, 6];
-const getUrl='https://api.github.com/users/octocat'
+const getUrl = 'https://api.github.com/users/octocat'
 export default function DisplaySearched() {
      const classes = useStyles();
 
@@ -56,19 +65,25 @@ export default function DisplaySearched() {
 
 
      useEffect(() => {
-    
-          axios.get(getUrl)
-            .then(response => {
-              // console.log('working')
-              console.log(response.data)
-              setSongInfo([response.data])
-            })
-            .catch(err => {
-              console.log('error')
-            })
-        }, []
-        )
 
+          axios.get(getUrl)
+               .then(response => {
+                    // console.log('working')
+                    console.log(response.data)
+                    setSongInfo([response.data])
+               })
+               .catch(err => {
+                    console.log('error')
+               })
+     }, []
+     )
+     if (!songInfo.length) {
+          return (
+               <div className={classes.root}>
+                    <CircularProgress />
+               </div>
+          )
+     }
      return (
           <Container className={classes.cardGrid} maxWidth="md">
                <CssBaseline />
@@ -84,14 +99,14 @@ export default function DisplaySearched() {
                                    <CardContent className={classes.cardContent}>
                                         <Typography gutterBottom variant="h5" component="h2">
                                              {songInfo[idx].name}
-                    </Typography>
+                                        </Typography>
                                         <Typography>
-                                        {songInfo[idx].url}
-                    </Typography>
+                                             {songInfo[idx].url}
+                                        </Typography>
                                    </CardContent>
                                    <CardActions>
-                                   <iframe src={`https://embed.spotify.com/?uri=spotify:track:4musm1R7AMRIUrdsIr1jAp&view=coverart&theme=black`} height='80' width='100%'></iframe>
-                                        
+                                        <iframe src={`https://embed.spotify.com/?uri=spotify:track:4musm1R7AMRIUrdsIr1jAp&view=coverart&theme=black`} height='80' width='100%'></iframe>
+
                                    </CardActions>
                               </Card>
                          </Grid>

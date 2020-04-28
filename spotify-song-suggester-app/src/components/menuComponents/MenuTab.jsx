@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from '@material-ui/core/Link';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Menu from '@material-ui/core/Menu';
@@ -9,6 +10,8 @@ import InboxIcon from '@material-ui/icons/MoveToInbox';
 import DraftsIcon from '@material-ui/icons/Drafts';
 import SendIcon from '@material-ui/icons/Send';
 import Headset from '@material-ui/icons/Headset';
+import GitHubIcon from '@material-ui/icons/GitHub';
+import { Link as RouterLink } from 'react-router-dom'
 
 const StyledMenu = withStyles({
   paper: {
@@ -39,6 +42,7 @@ const StyledMenuItem = withStyles((theme) => ({
       },
     },
   },
+  
 }))(MenuItem);
 
 export default function MenuTab() {
@@ -76,6 +80,25 @@ export default function MenuTab() {
           </ListItemIcon>
           <ListItemText primary="Profile" />
         </StyledMenuItem>
+
+        <RouterLink  to='/search'>
+        <StyledMenuItem>
+          <ListItemIcon>
+            <Headset fontSize="small" />
+          </ListItemIcon>
+          <ListItemText primary="Suggestions" />
+        </StyledMenuItem>
+      </RouterLink>
+
+        <Link target='_blank' href='https://github.com/Build-Week-Spotify-Song-Recommender'>
+          <StyledMenuItem>
+            <ListItemIcon>
+              <GitHubIcon fontSize="small" />
+            </ListItemIcon>
+            <ListItemText primary="Github" />
+          </StyledMenuItem>
+        </Link>
+
         <StyledMenuItem>
           <ListItemIcon>
             <DraftsIcon fontSize="small" />
