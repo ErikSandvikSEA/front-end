@@ -7,6 +7,7 @@ import HomePage from './components/HomePage'
 import Login from './components/Login'
 import SignUp from './components/SignUp'
 import DisplaySearched from './components/DisplaySearched'
+import UpdateUser from './components/menuComponents/UpdateUser'; 
 
 import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
