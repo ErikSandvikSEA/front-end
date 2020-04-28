@@ -59,6 +59,7 @@ const useStyles = makeStyles((theme) => ({
   },
   footer: {
     backgroundColor: '#1DB954',
+    color: 'white',
     padding: theme.spacing(6),
   },
   searchButtons: {
@@ -124,10 +125,10 @@ export default function HomePage() {
       </main>
       {/* Footer */}
       <footer className={classes.footer} >
-        <Typography variant="h6" align="center" gutterBottom color="textSecondary" >
+        <Typography variant="h6" align="center" gutterBottom >
           Footer
         </Typography>
-        <Typography variant="subtitle1" align="center" color="textSecondary" component="p">
+        <Typography variant="subtitle1" align="center"  component="p">
           Something here to give the footer a purpose!
         </Typography>
         <Copyright />

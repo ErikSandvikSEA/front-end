@@ -14,7 +14,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/alert';
-import { Link as RouterLink } from 'react-router-dom'
+import { Link as RouterLink, NavLink } from 'react-router-dom'
 
 function Copyright() {
      return (
@@ -52,9 +52,13 @@ const useStyles = makeStyles((theme) => ({
           border: '1px solid #eee',
           borderRadius: '7px',
           boxShadow: '0 5px 5px rgba(0,0,0,0.1)',
-
+          marginTop: '5%',
           transition: 'all 0.3s linear',
      },
+     linkButtons: {
+          textDecoration: 'none',
+          color: 'secondary'
+        },
 }));
 
 
@@ -147,8 +151,9 @@ export default function SignUp(props) {
                               className={classes.submit}
                               onClick={onSignUp}
                               disabled={disabled}
-                         >
+                         ><RouterLink to='/' className={classes.linkButtons}>
                               Sign Up
+                              </RouterLink>
           </Button>
                          <Grid container justify="flex-end">
                               <Grid item>

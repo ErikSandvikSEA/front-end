@@ -19,6 +19,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Link from '@material-ui/core/Link';
 import MenuTab from './components/menuComponents/MenuTab'
+import NavBar from './components/NavBar'
 
 
 import { v4 as uuid } from 'uuid'
@@ -189,47 +190,13 @@ export default function App() {
       [name]: value,
     })
   }
-  const classes = useStyles();
+  
   return (
 
 
     <div className="App">
       <CssBaseline />
-      <AppBar position="sticky">
-        
-       
-        <Toolbar>
-        <MenuTab/>
-          <div className={classes.appBar}>
-          <Button>
-        <RouterLink color="secondary" to='/home' className={classes.linkButtons}>
-          
-          <Typography variant="h6" color="secondary" noWrap >
-            Home
-            </Typography>
-            
-            </RouterLink>
-            </Button>
-        <div>
-        <Button>
-        <RouterLink color="secondary"to='/' className={classes.linkButtons}>
-          <Typography className={classes.title} variant="h6" color="secondary" noWrap>
-            Log In
-            </Typography>
-            </RouterLink>
-            </Button>
-
-            <Button>
-        <RouterLink color="secondary" to='/signup' className={classes.linkButtons}>
-          <Typography variant="h6" color="secondary" noWrap>
-            Sign Up
-            </Typography>
-            </RouterLink>
-            </Button>
-            </div>
-            </div>
-        </Toolbar>
-      </AppBar>
+      <NavBar />
   
       
       

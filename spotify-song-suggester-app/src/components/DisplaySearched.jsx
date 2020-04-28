@@ -36,12 +36,17 @@ const useStyles = makeStyles((theme) => ({
           display: 'flex',
           flexDirection: 'column',
           padding: '2%',
+ 
      },
      cardMedia: {
           paddingTop: '56.25%', // 16:9
      },
      cardContent: {
           flexGrow: 1,
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'space-around',
+          padding: '2%',
      },
      footer: {
           backgroundColor: '#1DB954',
@@ -54,6 +59,9 @@ const useStyles = makeStyles((theme) => ({
                marginLeft: theme.spacing(0),
           },
      },
+     textMargin: {
+          marginTop: '2%',
+     }
 }));
 
 const cards = [1, 2, 3, 4, 5, 6];
@@ -97,16 +105,18 @@ export default function DisplaySearched() {
                                         title="Image title"
                                    />
                                    <CardContent className={classes.cardContent}>
-                                        <Typography gutterBottom variant="h5" component="h2">
+                                        <Typography gutterBottom variant="h5" component="h2" className={classes.textMargin}>
                                              {songInfo[idx].name}
                                         </Typography>
-                                        <Typography>
+                                        <Typography className={classes.textMargin}>
                                              {songInfo[idx].url}
                                         </Typography>
+                                        <Button variant='outlined'>
+                                             Add to Favorites
+                                        </Button>
                                    </CardContent>
-                                   <CardActions>
+                                   <CardActions>                                        
                                         <iframe src={`https://embed.spotify.com/?uri=spotify:track:4musm1R7AMRIUrdsIr1jAp&view=coverart&theme=black`} height='80' width='100%'></iframe>
-
                                    </CardActions>
                               </Card>
                          </Grid>

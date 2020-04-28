@@ -10,7 +10,7 @@ import Headset from '@material-ui/icons/Headset';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import { Link as RouterLink } from 'react-router-dom'
+import { Link as RouterLink, Router } from 'react-router-dom'
 import axios from 'axios'
 
 
@@ -19,7 +19,7 @@ function Copyright() {
     <Typography variant="body2" color="textSecondary" align="center">
       {'Copyright © '}
       <Link color="inherit" href="https://material-ui.com/">
-        Spotify Suggestor
+        Spotify Suggester
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
@@ -53,9 +53,14 @@ const useStyles = makeStyles((theme) => ({
      border: '1px solid #eee',
      borderRadius: '7px',
      boxShadow:'0 5px 5px rgba(0,0,0,0.1)',
+     marginTop: '5%',
 
      transition:'all 0.3s linear',
-  }
+  },
+  linkButtons: {
+    textDecoration: 'none',
+    color: 'secondary'
+  },
 }));
 
 
@@ -113,8 +118,9 @@ export default function SignIn(props) {
             fullWidth
             variant="contained"
             color="inherit"
-            className={classes.submit}>
+            className={classes.submit}><RouterLink className={classes.linkButtons} to='/home'>
             Log In
+            </RouterLink>
           </Button>
           <Grid container>
           
