@@ -33,6 +33,7 @@ const useStyles = makeStyles((theme) => ({
           height: '100%',
           display: 'flex',
           flexDirection: 'column',
+          padding: '2%',
      },
      cardMedia: {
           paddingTop: '56.25%', // 16:9
@@ -82,19 +83,15 @@ export default function DisplaySearched() {
                                    />
                                    <CardContent className={classes.cardContent}>
                                         <Typography gutterBottom variant="h5" component="h2">
-                                             Heading
+                                             {songInfo[idx].name}
                     </Typography>
                                         <Typography>
-                                             This is a media card. You can use this section to describe the content.
+                                        {songInfo[idx].url}
                     </Typography>
                                    </CardContent>
                                    <CardActions>
-                                        <Button size="small" color="primary">
-                                             View
-                    </Button>
-                                        <Button size="small" color="primary">
-                                             Edit
-                    </Button>
+                                   <iframe src={`https://embed.spotify.com/?uri=spotify:track:4musm1R7AMRIUrdsIr1jAp&view=coverart&theme=black`} height='80' width='100%'></iframe>
+                                        
                                    </CardActions>
                               </Card>
                          </Grid>
