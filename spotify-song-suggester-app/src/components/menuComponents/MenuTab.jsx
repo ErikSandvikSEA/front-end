@@ -90,7 +90,7 @@ export default function MenuTab() {
           <ListItemText primary="Profile" />
         </StyledMenuItem>
 
-        <NavLink  className={classes.linkButtons} to='/search'>
+        <NavLink  className={classes.linkButtons} to='/home/search'>
         <StyledMenuItem>
           <ListItemIcon>
             <Headset fontSize="small" />

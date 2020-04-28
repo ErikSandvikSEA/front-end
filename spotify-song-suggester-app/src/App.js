@@ -27,6 +27,7 @@ import { v4 as uuid } from 'uuid'
 
 const postUrl = 'https://reqres.in/api/users'
 const getUrl='https://api.github.com/users/octocat'
+const dummyDataUrl = 'https://spotify-song-suggester-4.herokuapp.com/dummy_data'
 
 const registerTestUrl = 'https://spotify-song-suggester-project.herokuapp.com/api/auth/register'
 
@@ -115,23 +116,23 @@ export default function App() {
   const [formDisabled, setFormDisabled] = useState(true)
 
 
-  useEffect(() => {
+  // useEffect(() => {
     
-    axios.get(getUrl)
-      .then(response => {
-        // console.log('working')
-        // console.log(response.data)
-        setUsers(response.data)
-      })
-      .catch(err => {
-        console.log('error')
-      })
-  }, []
-  )
+  //   axios.get(dummyDataUrl)
+  //     .then(response => {
+  //       // console.log('working')
+  //       // console.log(response.data)
+  //       setUsers(response.data)
+  //     })
+  //     .catch(err => {
+  //       console.log('error')
+  //     })
+  // }, []
+  // )
 
 
   const postUser = (user) => {
-    axios.post(postUrl, user)
+    axios.post(registerTestUrl,user)
       .then(res => {
         console.log(res)
         console.log('working')
@@ -161,7 +162,7 @@ export default function App() {
 
     // 🔥 STEP 6 - WE NEED TO POST NEW USER TO THE API!
     postUser(newUser)
-    // setFormValues(initialFormValues)
+    setFormValues(initialFormValues)
   }
 
   const onInputChange = e => {

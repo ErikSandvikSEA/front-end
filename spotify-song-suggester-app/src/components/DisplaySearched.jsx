@@ -66,6 +66,7 @@ const useStyles = makeStyles((theme) => ({
 
 const cards = [1, 2, 3, 4, 5, 6];
 const getUrl = 'https://api.github.com/users/octocat'
+const dummyDataUrl = 'https://spotify-song-suggester-4.herokuapp.com/dummy_data'
 export default function DisplaySearched() {
      const classes = useStyles();
 
@@ -74,11 +75,11 @@ export default function DisplaySearched() {
 
      useEffect(() => {
 
-          axios.get(getUrl)
+          axios.get(dummyDataUrl)
                .then(response => {
                     // console.log('working')
                     console.log(response.data)
-                    setSongInfo([response.data])
+                    setSongInfo(response.data)
                })
                .catch(err => {
                     console.log('error')
@@ -101,15 +102,15 @@ export default function DisplaySearched() {
                               <Card className={classes.card}>
                                    <CardMedia
                                         className={classes.cardMedia}
-                                        image={songInfo[idx].avatar_url}
+                                        image={specificSongInfo.cover_art}
                                         title="Image title"
                                    />
                                    <CardContent className={classes.cardContent}>
                                         <Typography gutterBottom variant="h5" component="h2" className={classes.textMargin}>
-                                             {songInfo[idx].name}
+                                             {specificSongInfo.song}
                                         </Typography>
                                         <Typography className={classes.textMargin}>
-                                             {songInfo[idx].url}
+                                             {specificSongInfo.artist}
                                         </Typography>
                                         <Button variant='outlined'>
                                              Add to Favorites

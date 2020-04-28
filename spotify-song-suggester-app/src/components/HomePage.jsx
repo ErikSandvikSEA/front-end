@@ -98,11 +98,13 @@ export default function HomePage() {
             <div className={classes.heroButtons}>
               <Grid container spacing={2} justify="center">
                 <Grid item>
-                  <RouterLink className='searchButtons' to='/search'>
+                 
                     <Button className='searchButtons' variant="contained" color="primary">
+                    <RouterLink className='searchButtons' to='/home/search'>
                       Search For New Songs
+                      </RouterLink>
                   </Button>
-                  </RouterLink>
+                  
 
                 </Grid>
                 <Grid item>
@@ -119,7 +121,7 @@ export default function HomePage() {
           </Container>
         </div>
         {/* end hero unit */}
-        <Route path='/search'>
+        <Route path='/home/search'>
           <DisplaySearched />
         </Route>
       </main>
