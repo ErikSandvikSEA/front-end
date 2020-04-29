@@ -20,6 +20,7 @@ import Container from '@material-ui/core/Container';
 import Link from '@material-ui/core/Link';
 import MenuTab from './components/menuComponents/MenuTab'
 import NavBar from './components/NavBar'
+import Favorites from './components/menuComponents/Favorites'
 
 
 import { v4 as uuid } from 'uuid'
@@ -132,7 +133,7 @@ export default function App() {
 
 
   const postUser = (user) => {
-    axios.post(registerTestUrl,user)
+    axios.post(registerTestUrl, JSON.stringify(user))
       .then(res => {
         console.log(res)
         console.log('working')
@@ -159,7 +160,7 @@ export default function App() {
       email: formValues.email,
       password: formValues.password,
     }
-
+    console.log(JSON.stringify(newUser))
     // 🔥 STEP 6 - WE NEED TO POST NEW USER TO THE API!
     postUser(newUser)
     setFormValues(initialFormValues)
@@ -221,7 +222,11 @@ export default function App() {
         
         />
       </Route>
->
+
+      <Route>
+        <Favorites path='/favorites' />
+      </Route>
+
       <Route>
         <HomePage path='/home' />
       </Route>

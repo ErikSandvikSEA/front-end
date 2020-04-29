@@ -107,13 +107,14 @@ export default function MenuTab() {
             <ListItemText primary="Github" />
           </StyledMenuItem>
         </Link>
-
+        <NavLink  className={classes.linkButtons} to='/favorites'>
         <StyledMenuItem>
           <ListItemIcon>
             <DraftsIcon fontSize="small" />
           </ListItemIcon>
           <ListItemText primary="Favorites" />
         </StyledMenuItem>
+        </NavLink>
         <StyledMenuItem>
           <ListItemIcon>
             <InboxIcon fontSize="small" />
