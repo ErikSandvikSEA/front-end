@@ -88,7 +88,7 @@ export default function DisplaySearched() {
           axios.get(dummyDataUrl)
                .then(response => {
                     // console.log('working')
-                    console.log(response.data)
+                    // console.log(response.data)
                     setSongInfo(response.data)
                })
                .catch(err => {

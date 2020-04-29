@@ -31,7 +31,10 @@ const getUrl='https://api.github.com/users/octocat'
 const dummyDataUrl = 'https://spotify-song-suggester-4.herokuapp.com/dummy_data'
 const localServerUrl = 'http://localhost:4000/api/auth/register'
 
-
+const initialSearchFormValue = {
+  song: '',
+  artist: '',
+}
 const initialFormValues = {
   ///// TEXT INPUTS /////
   username: '',
@@ -105,6 +108,8 @@ export default function App() {
   const [formValues, setFormValues] = useState(initialFormValues)
   const [formErrors, setFormErrors] = useState(initialFormErrors)
   const [formDisabled, setFormDisabled] = useState(true)
+  const [searchFormValue, setSearchFormValue ] = useState(initialSearchFormValue)
+  const [searches, setSearches] = useState([])
 
 
   // useEffect(() => {
@@ -122,6 +127,21 @@ export default function App() {
   // )
 
 
+  const postSearch = search => {
+    axios.post(postUrl, search)
+      .then(response => {
+        console.log(response)
+        setSearches([...searches, response.data])
+      })
+      .catch(err => {
+        console.log(err)
+      })
+  }
+
+
+
+
+
   const postUser = user => {
     axios.post(localServerUrl, user)
       .then(res => {
@@ -132,7 +152,28 @@ export default function App() {
         console.log('error', err)
       })
   }
+
+    const onSearch = e => {
+      e.preventDefault()
+      const newSearch = {
+        song: searchFormValue.song,
+        artist: searchFormValue.artist
+      }
+      console.log(newSearch)
+      postSearch(newSearch)
+      setSearchFormValue(initialSearchFormValue)
+    }
+
+
+    const onSearchInputChange = e => {
+      const searchName = e.target.name
+      const searchValue = e.target.value
   
+      setSearchFormValue({
+        ...searchFormValue,
+        [searchName]: searchValue,
+      })
+    }
 
   useEffect(() => {
     formSchema.isValid(formValues)
@@ -156,6 +197,8 @@ export default function App() {
     postUser(newUser)
     setFormValues(initialFormValues)
   }
+
+
 
   const onInputChange = e => {
     const name = e.target.name
@@ -214,7 +257,11 @@ export default function App() {
           <DisplaySearched />
         </Route> */}
       <Route  path='/home'>
-        <HomePage />
+        <HomePage 
+          searchFormValue={searchFormValue}
+          onSearch={onSearch}
+          onSearchInputChange={onSearchInputChange}
+        />
       </Route>
 
       <Route exact path='/'>

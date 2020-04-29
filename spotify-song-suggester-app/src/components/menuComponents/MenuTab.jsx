@@ -83,14 +83,14 @@ export default function MenuTab() {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <StyledMenuItem>
+        <StyledMenuItem style={{ textDecoration: 'none', color:'#1DB954'}}>
           <ListItemIcon>
             <SendIcon fontSize="small" />
           </ListItemIcon>
           <ListItemText primary="Profile" />
         </StyledMenuItem>
 
-        <NavLink  className={classes.linkButtons} to='/home/search'>
+        <NavLink style={{ textDecoration: 'none', color:'#1DB954'}} className={classes.linkButtons} to='/home/search'>
         <StyledMenuItem>
           <ListItemIcon>
             <Headset fontSize="small" />
@@ -107,7 +107,7 @@ export default function MenuTab() {
             <ListItemText primary="Github" />
           </StyledMenuItem>
         </Link>
-        <NavLink  className={classes.linkButtons} to='/favorites'>
+        <NavLink  style={{ textDecoration: 'none', color:'#1DB954'}} className={classes.linkButtons} to='/favorites'>
         <StyledMenuItem>
           <ListItemIcon>
             <DraftsIcon fontSize="small" />
@@ -115,7 +115,7 @@ export default function MenuTab() {
           <ListItemText primary="Favorites" />
         </StyledMenuItem>
         </NavLink>
-        <StyledMenuItem>
+        <StyledMenuItem style={{ textDecoration: 'none', color:'#1DB954'}}>
           <ListItemIcon>
             <InboxIcon fontSize="small" />
           </ListItemIcon>
