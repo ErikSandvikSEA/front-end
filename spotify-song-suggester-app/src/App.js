@@ -20,6 +20,7 @@ import Container from '@material-ui/core/Container';
 import Link from '@material-ui/core/Link';
 import MenuTab from './components/menuComponents/MenuTab'
 import Favorites from './components/menuComponents/Favorites'
+import NavBar from './components/NavBar'
 
 
 import { v4 as uuid } from 'uuid'
@@ -143,7 +144,7 @@ export default function App() {
 
     const newUser = {
       name: formValues.name,
-      email: formValues.email,
+      emailAddress: formValues.email,
       password: formValues.password,
     }
 
@@ -184,41 +185,12 @@ export default function App() {
 
     <div className="App">
       <CssBaseline />
-      <AppBar position="sticky" className='appBar'>
-        
-       
-        <Toolbar  className='appBar'>
-        <MenuTab/>
-          
-          <Route path='/'>
-        <RouterLink color="secondary"to='/'>
-          <Typography className={classes.title} variant="h6" color="secondary" noWrap>
-            Home
-            </Typography>
-            </RouterLink>
-        </Route>
-          <Route>
-        <RouterLink color="secondary"to='/login'>
-          <Typography variant="h6" color="secondary" noWrap>
-            Log In
-            </Typography>
-            </RouterLink>
-        </Route>
-        <Route>
-        <RouterLink color="secondary"to='/signup'>
-          <Typography variant="h6" color="secondary" noWrap>
-            Sign Up
-            </Typography>
-            </RouterLink>
-        </Route>
-
-        </Toolbar>
-      </AppBar>
-    
+      <NavBar />
     
         
     <Switch>
-      <Route path='/signup'>
+
+      <Route exact path='/signup'>
         <SignUp
           values={formValues}
           onSignUp={onSignUp}
@@ -228,23 +200,28 @@ export default function App() {
         
         />
       </Route>
-      <Route path='/favorites'>
+      <Route exact path='/favorites'>
            <Favorites
             values={formValues}
             onInputChange={onInputChange}
            />
       </Route>
+      {/* <Route exact path='/home/search'>
+          <DisplaySearched />
+        </Route> */}
+      <Route  path='/home'>
+        <HomePage />
+      </Route>
 
-      <Route path='/login'>
+      <Route exact path='/'>
            <Login
             values={formValues}
             onInputChange={onInputChange}
            />
       </Route>
+     
 
-      <Route path='/'>
-        <HomePage />
-      </Route>
+    
     
  </Switch>
 

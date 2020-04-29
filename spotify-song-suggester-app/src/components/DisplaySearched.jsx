@@ -83,7 +83,7 @@ export default function DisplaySearched() {
                     setSongInfo(response.data)
                })
                .catch(err => {
-                    console.log('error')
+                    console.log('error',)
                })
      }, []
      )

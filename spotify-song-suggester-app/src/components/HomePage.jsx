@@ -135,7 +135,7 @@ export default function HomePage() {
           </Container>
         </div>
         {/* end hero unit */}
-        <Route path='/home/search'>
+        <Route exact path='/home/search'>
           <DisplaySearched />
         </Route>
       </main>
