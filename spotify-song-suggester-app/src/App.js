@@ -133,7 +133,7 @@ export default function App() {
 
 
   const postUser = (user) => {
-    axios.post(registerTestUrl, JSON.stringify(user))
+    axios.post(registerTestUrl, user)
       .then(res => {
         console.log(res)
         console.log('working')
@@ -141,6 +141,7 @@ export default function App() {
       })
       .catch(err => {
         console.log('error')
+        console.log(err)
       })
   }
 
