@@ -161,7 +161,7 @@ if (!favoritesInfo.length) {
                <CssBaseline />
                <Grid container spacing={4}>
                     {favoritesInfo.map((favorite, idx) => (
-                         <Grid item key={favorite.id} xs={12} sm={6} md={4}>
+                         <Grid item key={idx} xs={12} sm={6} md={4}>
                               <Card className={classes.card}>
                                    <CardMedia
                                         className={classes.cardMedia}

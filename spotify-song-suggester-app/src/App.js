@@ -123,7 +123,7 @@ export default function App() {
   const postUser = user => {
     axios.post(postTestUrl, user)
       .then(res => {
-        console.log('the response from posting',res)
+        console.log('the response from posting')
         setUsers([...users, res.data])
       })
       .catch(err => {
@@ -143,12 +143,13 @@ export default function App() {
     e.preventDefault()
 
     const newUser = {
-      name: formValues.name,
-      emailAddress: formValues.email,
+      username: formValues.username,
+      emailAddress: formValues.emailAddress,
       password: formValues.password,
     }
 
     // 🔥 STEP 6 - WE NEED TO POST NEW USER TO THE API!
+    console.log(newUser)
     postUser(newUser)
     setFormValues(initialFormValues)
   }
