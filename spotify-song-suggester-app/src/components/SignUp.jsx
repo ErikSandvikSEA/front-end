@@ -12,7 +12,9 @@ import Headset from '@material-ui/icons/Headset';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import { Link as RouterLink } from 'react-router-dom'
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/alert';
+import { Link as RouterLink, NavLink } from 'react-router-dom'
 
 function Copyright() {
      return (
@@ -50,10 +52,18 @@ const useStyles = makeStyles((theme) => ({
           border: '1px solid #eee',
           borderRadius: '7px',
           boxShadow: '0 5px 5px rgba(0,0,0,0.1)',
-
+          marginTop: '5%',
           transition: 'all 0.3s linear',
      },
+     linkButtons: {
+          textDecoration: 'none',
+          color: 'secondary'
+        },
 }));
+
+
+
+  
 
 export default function SignUp(props) {
      const {
@@ -67,6 +77,9 @@ export default function SignUp(props) {
 
      const classes = useStyles();
 
+
+    
+
      return (
           <Container className={classes.container} component="main" maxWidth="xs">
                <CssBaseline />
@@ -76,7 +89,7 @@ export default function SignUp(props) {
                     </Avatar>
                     <Typography component="h1" variant="h5">
                          Sign up
-        </Typography>
+                    </Typography>
                     <form className={classes.form} noValidate>
                          <Grid container spacing={2}>
                               <Grid item xs={12}>
@@ -138,15 +151,16 @@ export default function SignUp(props) {
                               className={classes.submit}
                               onClick={onSignUp}
                               disabled={disabled}
-                         >
+                         ><RouterLink to='/' className={classes.linkButtons}>
                               Sign Up
+                              </RouterLink>
           </Button>
                          <Grid container justify="flex-end">
                               <Grid item>
                                  
-                                        <RouterLink to='/login'>
+                                        <RouterLink to='/'>
                                              Already have an account? Sign in
-                </RouterLink>
+                                        </RouterLink>
                                
                               </Grid>
                          </Grid>
@@ -155,6 +169,7 @@ export default function SignUp(props) {
                <Box mt={5}>
                     <Copyright />
                </Box>
+              
           </Container>
      );
 }

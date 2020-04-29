@@ -1,4 +1,4 @@
-import React, { useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
@@ -12,6 +12,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Link from '@material-ui/core/Link';
 import axios from 'axios'
+import CircularProgress from '@material-ui/core/CircularProgress';
+
 
 
 const useStyles = makeStyles((theme) => ({
@@ -34,21 +36,37 @@ const useStyles = makeStyles((theme) => ({
           display: 'flex',
           flexDirection: 'column',
           padding: '2%',
+ 
      },
      cardMedia: {
           paddingTop: '56.25%', // 16:9
      },
      cardContent: {
           flexGrow: 1,
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'space-around',
+          padding: '2%',
      },
      footer: {
           backgroundColor: '#1DB954',
           padding: theme.spacing(6),
      },
+     root: {
+          display: 'flex',
+          justifyContent: 'center',
+          '& > * + *': {
+               marginLeft: theme.spacing(0),
+          },
+     },
+     textMargin: {
+          marginTop: '2%',
+     }
 }));
 
 const cards = [1, 2, 3, 4, 5, 6];
-const getUrl='https://api.github.com/users/octocat'
+const getUrl = 'https://api.github.com/users/octocat'
+const dummyDataUrl = 'https://spotify-song-suggester-4.herokuapp.com/dummy_data'
 export default function DisplaySearched() {
      const classes = useStyles();
 
@@ -56,19 +74,25 @@ export default function DisplaySearched() {
 
 
      useEffect(() => {
-    
-          axios.get(getUrl)
-            .then(response => {
-              // console.log('working')
-              console.log(response.data)
-              setSongInfo([response.data])
-            })
-            .catch(err => {
-              console.log('error')
-            })
-        }, []
-        )
 
+          axios.get(dummyDataUrl)
+               .then(response => {
+                    // console.log('working')
+                    console.log(response.data)
+                    setSongInfo(response.data)
+               })
+               .catch(err => {
+                    console.log('error')
+               })
+     }, []
+     )
+     if (!songInfo.length) {
+          return (
+               <div className={classes.root}>
+                    <CircularProgress />
+               </div>
+          )
+     }
      return (
           <Container className={classes.cardGrid} maxWidth="md">
                <CssBaseline />
@@ -78,20 +102,22 @@ export default function DisplaySearched() {
                               <Card className={classes.card}>
                                    <CardMedia
                                         className={classes.cardMedia}
-                                        image={songInfo[idx].avatar_url}
+                                        image={specificSongInfo.cover_art}
                                         title="Image title"
                                    />
                                    <CardContent className={classes.cardContent}>
-                                        <Typography gutterBottom variant="h5" component="h2">
-                                             {songInfo[idx].name}
-                    </Typography>
-                                        <Typography>
-                                        {songInfo[idx].url}
-                    </Typography>
+                                        <Typography gutterBottom variant="h5" component="h2" className={classes.textMargin}>
+                                             {specificSongInfo.song}
+                                        </Typography>
+                                        <Typography className={classes.textMargin}>
+                                             {specificSongInfo.artist}
+                                        </Typography>
+                                        <Button variant='outlined'>
+                                             Add to Favorites
+                                        </Button>
                                    </CardContent>
-                                   <CardActions>
-                                   <iframe src={`https://embed.spotify.com/?uri=spotify:track:4musm1R7AMRIUrdsIr1jAp&view=coverart&theme=black`} height='80' width='100%'></iframe>
-                                        
+                                   <CardActions>                                        
+                                        <iframe src={`https://embed.spotify.com/?uri=spotify:track:4musm1R7AMRIUrdsIr1jAp&view=coverart&theme=black`} height='80' width='100%'></iframe>
                                    </CardActions>
                               </Card>
                          </Grid>

@@ -1,6 +1,7 @@
 import React from 'react';
 import { createMuiTheme } from '@material-ui/core/styles';
 
+
 const appTheme = createMuiTheme({
      palette: {
        primary: {
@@ -10,7 +11,8 @@ const appTheme = createMuiTheme({
        secondary: {
             main: '#FFFFFF',
      }
-     },
-   });
+     }
+    });
+
 
    export default appTheme
