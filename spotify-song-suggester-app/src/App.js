@@ -19,8 +19,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Link from '@material-ui/core/Link';
 import MenuTab from './components/menuComponents/MenuTab'
-import NavBar from './components/NavBar'
-import Favorites from './components/menuComponents/Favorites'
 
 
 import { v4 as uuid } from 'uuid'
@@ -28,9 +26,6 @@ import { v4 as uuid } from 'uuid'
 
 const postUrl = 'https://reqres.in/api/users'
 const getUrl='https://api.github.com/users/octocat'
-const dummyDataUrl = 'https://spotify-song-suggester-4.herokuapp.com/dummy_data'
-
-const registerTestUrl = 'https://spotify-song-suggester-project.herokuapp.com/api/auth/register'
 
 
 const initialFormValues = {
@@ -68,12 +63,6 @@ const formSchema = yup.object().shape({
 const useStyles = makeStyles((theme) => ({
   appBar: {
      backgroundColor: '#1DB954',
-     display: 'flex',
-     justifyContent: 'space-between',
-     width: '100%',
-     alignItems: 'center',
-     paddingLeft: '2%',
-     paddingRight: '2%',
   },
   icon: {
     marginRight: theme.spacing(2),
@@ -104,9 +93,6 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor:'#1DB954',
     padding: theme.spacing(6),
   },
-  linkButtons: {
-    textDecoration: 'none',
-  }
 }));
 
 
@@ -117,30 +103,29 @@ export default function App() {
   const [formDisabled, setFormDisabled] = useState(true)
 
 
-  // useEffect(() => {
+  useEffect(() => {
     
-  //   axios.get(dummyDataUrl)
-  //     .then(response => {
-  //       // console.log('working')
-  //       // console.log(response.data)
-  //       setUsers(response.data)
-  //     })
-  //     .catch(err => {
-  //       console.log('error')
-  //     })
-  // }, []
-  // )
+    axios.get(getUrl)
+      .then(response => {
+        // console.log('working')
+        console.log(response.data)
+        setUsers([response.data])
+      })
+      .catch(err => {
+        console.log('error in receiving information from app.js', err)
+      })
+  }, []
+  )
 
 
-  const postUser = (user) => {
-    axios.post(registerTestUrl, JSON.stringify(user))
+  const postUser = user => {
+    axios.post(postUrl, user)
       .then(res => {
-        console.log(res)
-        console.log('working')
+        console.log('the response from posting',res)
         setUsers([...users, res.data])
       })
       .catch(err => {
-        console.log('error')
+        console.log('error', err)
       })
   }
 
@@ -156,11 +141,11 @@ export default function App() {
     e.preventDefault()
 
     const newUser = {
-      username: formValues.username,
+      name: formValues.name,
       email: formValues.email,
       password: formValues.password,
     }
-    console.log(JSON.stringify(newUser))
+
     // 🔥 STEP 6 - WE NEED TO POST NEW USER TO THE API!
     postUser(newUser)
     setFormValues(initialFormValues)
@@ -192,26 +177,46 @@ export default function App() {
       [name]: value,
     })
   }
-  
+  const classes = useStyles();
   return (
 
 
     <div className="App">
       <CssBaseline />
-      <NavBar />
-  
-      
-      
+      <AppBar position="sticky" className='appBar'>
+        
+       
+        <Toolbar  className='appBar'>
+        <MenuTab/>
+          
+          <Route path='/'>
+        <RouterLink color="secondary"to='/'>
+          <Typography className={classes.title} variant="h6" color="secondary" noWrap>
+            Home
+            </Typography>
+            </RouterLink>
+        </Route>
+          <Route>
+        <RouterLink color="secondary"to='/login'>
+          <Typography variant="h6" color="secondary" noWrap>
+            Log In
+            </Typography>
+            </RouterLink>
+        </Route>
+        <Route>
+        <RouterLink color="secondary"to='/signup'>
+          <Typography variant="h6" color="secondary" noWrap>
+            Sign Up
+            </Typography>
+            </RouterLink>
+        </Route>
+
+        </Toolbar>
+      </AppBar>
+    
+    
         
     <Switch>
-
-    <Route exact path='/'>
-           <Login
-            values={formValues}
-            onInputChange={onInputChange}
-           />
-      </Route>
-
       <Route path='/signup'>
         <SignUp
           values={formValues}
@@ -223,16 +228,17 @@ export default function App() {
         />
       </Route>
 
-      <Route>
-        <Favorites path='/favorites' />
+
+      <Route path='/login'>
+           <Login
+            values={formValues}
+            onInputChange={onInputChange}
+           />
       </Route>
 
       <Route>
-        <HomePage path='/home' />
+        <HomePage path='/' />
       </Route>
-
-
-      
     
  </Switch>
 

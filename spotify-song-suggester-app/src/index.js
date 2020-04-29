@@ -9,9 +9,9 @@ import appTheme from './themes'
 render(
 
     <ThemeProvider theme={appTheme}>
-    <Router >
-    <App />
-    </Router>
+      <Router >
+        <App />
+      </Router>
     </ThemeProvider>
   
 
