@@ -12,6 +12,8 @@ import DisplaySearched from './DisplaySearched'
 import { Route, Switch } from 'react-router-dom'
 import { Link as RouterLink } from 'react-router-dom'
 import TextField from '@material-ui/core/TextField';
+import logo from './logo/logo.png'
+
 
 
 
@@ -38,6 +40,9 @@ const useStyles = makeStyles((theme) => ({
   heroContent: {
     backgroundColor: theme.palette.background.paper,
     padding: theme.spacing(8, 0, 6),
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
   },
   heroButtons: {
     marginTop: theme.spacing(4),
@@ -71,6 +76,12 @@ const useStyles = makeStyles((theme) => ({
       width: '25ch',
     },
   },
+  image: {
+    border: '1px solid black',
+    borderRadius: '30px',
+    boxShadow:'0 5px 5px rgba(0,0,0,0.6)',
+    marginBottom:'5%',
+  }
 }));
 
 
@@ -84,10 +95,13 @@ export default function HomePage() {
       <main>
         {/* Hero unit */}
         <div className={classes.heroContent}>
+        <img src={logo} className={classes.image} width='60%'/>
           <Container maxWidth="sm">
+          
             <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
               Spotify Song Suggester
             </Typography>
+            
             <Typography variant="h3" align="center" color="textSecondary" paragraph>
               Welcome 'user'
             </Typography>

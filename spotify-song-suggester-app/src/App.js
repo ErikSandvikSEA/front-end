@@ -36,13 +36,13 @@ const registerTestUrl = 'https://spotify-song-suggester-project.herokuapp.com/ap
 const initialFormValues = {
   ///// TEXT INPUTS /////
   username: '',
-  email: '',
+  emailAddress: '',
   password: '',
 }
 
 const initialFormErrors = {
   username: '',
-  email: '',
+  emailAddress: '',
   password: '',
 }
 
@@ -51,7 +51,7 @@ const formSchema = yup.object().shape({
     .string()
     .required('Username is required')
     .min(3, 'Username must have at least 3 characters'),
-  email: yup
+  emailAddress: yup
     .string()
     .required('Email is required')
     .email('Valid email is required'),
@@ -157,8 +157,8 @@ export default function App() {
 
     const newUser = {
       username: formValues.username,
-      email: formValues.email,
-      password: formValues.password,
+      emailAddress: formValues.emailAddress,
+      password: formValues.password
     }
     console.log(JSON.stringify(newUser))
     // 🔥 STEP 6 - WE NEED TO POST NEW USER TO THE API!
@@ -223,13 +223,15 @@ export default function App() {
         />
       </Route>
 
-      <Route>
-        <Favorites path='/favorites' />
+      <Route exact path='/favorites' >
+        <Favorites />
       </Route>
 
-      <Route>
-        <HomePage path='/home' />
+      <Route exact path='/home'>
+        <HomePage  />
       </Route>
+
+      
 
 
       
