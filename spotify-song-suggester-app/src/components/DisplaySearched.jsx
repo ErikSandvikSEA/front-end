@@ -83,7 +83,7 @@ export default function DisplaySearched() {
                     setSongInfo(response.data)
                })
                .catch(err => {
-                    console.log('error')
+                    console.log('error',)
                })
      }, []
      )
@@ -99,7 +99,7 @@ export default function DisplaySearched() {
                <CssBaseline />
                <Grid container spacing={4}>
                     {songInfo.map((specificSongInfo, idx) => (
-                         <Grid item key={specificSongInfo.id} xs={12} sm={6} md={4}>
+                         <Grid item key={idx} xs={12} sm={6} md={4}>
                               <Card className={classes.card}>
                                    <CardMedia
                                         className={classes.cardMedia}

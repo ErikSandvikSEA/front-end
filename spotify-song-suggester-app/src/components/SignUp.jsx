@@ -59,6 +59,10 @@ const useStyles = makeStyles((theme) => ({
           textDecoration: 'none',
           color: 'secondary'
         },
+     errorMessages: {
+          fontWeight: 'bolder',
+          color: 'red',
+     }
 }));
 
 
@@ -112,11 +116,11 @@ export default function SignUp(props) {
                                         variant="outlined"
                                         required
                                         fullWidth
-                                        id="email"
+                                        id="emailAddress"
                                         label="Email Address"
-                                        name="email"
+                                        name="emailAddress"
                                         
-                                        value={values.email}
+                                        value={values.emailAddress}
                                         onChange={onInputChange}
                                    />
                               </Grid>
@@ -137,11 +141,11 @@ export default function SignUp(props) {
 
                          </Grid>
                          <div className='errors'>
-                              <h3 value={errors.username}>{errors.username}</h3>
+                              <h3 className={classes.errorMessages} value={errors.username}>{errors.username}</h3>
 
-                              <h3 value={errors.email}>{errors.email}</h3>
+                              <h3 className={classes.errorMessages} value={errors.emailAddress}>{errors.emailAddress}</h3>
 
-                              <h3 value={errors.password} >{errors.password}</h3>
+                              <h3 className={classes.errorMessages} value={errors.password} >{errors.password}</h3>
                          </div>
                          <Button
                               type="submit"

@@ -19,25 +19,29 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Link from '@material-ui/core/Link';
 import MenuTab from './components/menuComponents/MenuTab'
+import Favorites from './components/menuComponents/Favorites'
+import NavBar from './components/NavBar'
 
 
 import { v4 as uuid } from 'uuid'
 
-
+const postTestUrl = 'https://spotify-song-suggester-project.herokuapp.com/api/auth/register'
 const postUrl = 'https://reqres.in/api/users'
 const getUrl='https://api.github.com/users/octocat'
+const dummyDataUrl = 'https://spotify-song-suggester-4.herokuapp.com/dummy_data'
+const localServerUrl = 'http://localhost:4000/api/auth/register'
 
 
 const initialFormValues = {
   ///// TEXT INPUTS /////
   username: '',
-  email: '',
+  emailAddress: '',
   password: '',
 }
 
 const initialFormErrors = {
   username: '',
-  email: '',
+  emailAddress: '',
   password: '',
 }
 
@@ -46,7 +50,7 @@ const formSchema = yup.object().shape({
     .string()
     .required('Username is required')
     .min(3, 'Username must have at least 3 characters'),
-  email: yup
+  emailAddress: yup
     .string()
     .required('Email is required')
     .email('Valid email is required'),
@@ -103,25 +107,25 @@ export default function App() {
   const [formDisabled, setFormDisabled] = useState(true)
 
 
-  useEffect(() => {
+  // useEffect(() => {
     
-    axios.get(getUrl)
-      .then(response => {
-        // console.log('working')
-        console.log(response.data)
-        setUsers([response.data])
-      })
-      .catch(err => {
-        console.log('error in receiving information from app.js', err)
-      })
-  }, []
-  )
+  //   axios.get(postTestUrl)
+  //     .then(response => {
+  //       // console.log('working')
+  //       console.log(response.data)
+  //       setUsers([response.data])
+  //     })
+  //     .catch(err => {
+  //       console.log('error in receiving information from app.js', err)
+  //     })
+  // }, []
+  // )
 
 
   const postUser = user => {
-    axios.post(postUrl, user)
+    axios.post(localServerUrl, user)
       .then(res => {
-        console.log('the response from posting',res)
+        console.log('the response from posting')
         setUsers([...users, res.data])
       })
       .catch(err => {
@@ -141,12 +145,13 @@ export default function App() {
     e.preventDefault()
 
     const newUser = {
-      name: formValues.name,
-      email: formValues.email,
+      username: formValues.username,
+      emailAddress: formValues.emailAddress,
       password: formValues.password,
     }
 
     // 🔥 STEP 6 - WE NEED TO POST NEW USER TO THE API!
+    console.log(newUser)
     postUser(newUser)
     setFormValues(initialFormValues)
   }
@@ -183,41 +188,12 @@ export default function App() {
 
     <div className="App">
       <CssBaseline />
-      <AppBar position="sticky" className='appBar'>
-        
-       
-        <Toolbar  className='appBar'>
-        <MenuTab/>
-          
-          <Route path='/'>
-        <RouterLink color="secondary"to='/'>
-          <Typography className={classes.title} variant="h6" color="secondary" noWrap>
-            Home
-            </Typography>
-            </RouterLink>
-        </Route>
-          <Route>
-        <RouterLink color="secondary"to='/login'>
-          <Typography variant="h6" color="secondary" noWrap>
-            Log In
-            </Typography>
-            </RouterLink>
-        </Route>
-        <Route>
-        <RouterLink color="secondary"to='/signup'>
-          <Typography variant="h6" color="secondary" noWrap>
-            Sign Up
-            </Typography>
-            </RouterLink>
-        </Route>
-
-        </Toolbar>
-      </AppBar>
-    
+      <NavBar />
     
         
     <Switch>
-      <Route path='/signup'>
+
+      <Route exact path='/signup'>
         <SignUp
           values={formValues}
           onSignUp={onSignUp}
@@ -227,18 +203,28 @@ export default function App() {
         
         />
       </Route>
+      <Route exact path='/favorites'>
+           <Favorites
+            values={formValues}
+            onInputChange={onInputChange}
+           />
+      </Route>
+      {/* <Route exact path='/home/search'>
+          <DisplaySearched />
+        </Route> */}
+      <Route  path='/home'>
+        <HomePage />
+      </Route>
 
-
-      <Route path='/login'>
+      <Route exact path='/'>
            <Login
             values={formValues}
             onInputChange={onInputChange}
            />
       </Route>
+     
 
-      <Route>
-        <HomePage path='/' />
-      </Route>
+    
     
  </Switch>
 
