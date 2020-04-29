@@ -28,6 +28,8 @@ import { v4 as uuid } from 'uuid'
 const postTestUrl = 'https://spotify-song-suggester-project.herokuapp.com/api/auth/register'
 const postUrl = 'https://reqres.in/api/users'
 const getUrl='https://api.github.com/users/octocat'
+const dummyDataUrl = 'https://spotify-song-suggester-4.herokuapp.com/dummy_data'
+const localServerUrl = 'http://localhost:4000/api/auth/register'
 
 
 const initialFormValues = {
@@ -105,23 +107,23 @@ export default function App() {
   const [formDisabled, setFormDisabled] = useState(true)
 
 
-  useEffect(() => {
+  // useEffect(() => {
     
-    axios.get(getUrl)
-      .then(response => {
-        // console.log('working')
-        console.log(response.data)
-        setUsers([response.data])
-      })
-      .catch(err => {
-        console.log('error in receiving information from app.js', err)
-      })
-  }, []
-  )
+  //   axios.get(postTestUrl)
+  //     .then(response => {
+  //       // console.log('working')
+  //       console.log(response.data)
+  //       setUsers([response.data])
+  //     })
+  //     .catch(err => {
+  //       console.log('error in receiving information from app.js', err)
+  //     })
+  // }, []
+  // )
 
 
   const postUser = user => {
-    axios.post(postTestUrl, user)
+    axios.post(localServerUrl, user)
       .then(res => {
         console.log('the response from posting')
         setUsers([...users, res.data])

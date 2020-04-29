@@ -176,12 +176,10 @@ if (!favoritesInfo.length) {
                                              {favorite.artist}
                                         </Typography>
                                         <Button variant='outlined'>
-                                             Add to Favorites
+                                             Remove From Favorites
                                         </Button>
                                    </CardContent>
-                                   <CardActions>                                        
-                                        <iframe src={`https://embed.spotify.com/?uri=spotify:track:4musm1R7AMRIUrdsIr1jAp&view=coverart&theme=black`} height='80' width='100%'></iframe>
-                                   </CardActions>
+                                  
                               </Card>
                          </Grid>
                     ))}
