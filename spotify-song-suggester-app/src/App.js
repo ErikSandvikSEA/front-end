@@ -112,7 +112,7 @@ export default function App() {
         setUsers([response.data])
       })
       .catch(err => {
-        console.log('error')
+        console.log('error in receiving information from app.js', err)
       })
   }, []
   )
