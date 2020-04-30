@@ -172,8 +172,11 @@ if (!favoritesInfo.length) {
                                         <Typography gutterBottom variant="h5" component="h2" className={classes.textMargin}>
                                              {favorite.song}
                                         </Typography>
-                                        <Typography className={classes.textMargin}>
+                                        <Typography variant='h6' className={classes.textMargin}>
                                              {favorite.artist}
+                                        </Typography>
+                                        <Typography className={classes.textMargin}>
+                                             {favorite.album}
                                         </Typography>
                                         <Button variant='outlined'>
                                              Remove From Favorites

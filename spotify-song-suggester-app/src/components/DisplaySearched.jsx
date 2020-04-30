@@ -36,11 +36,14 @@ const useStyles = makeStyles((theme) => ({
           height: '100%',
           display: 'flex',
           flexDirection: 'column',
-          padding: '2%',
+          padding: '3%',
+          backgroundColor: '#2a2a2a'
  
      },
      cardMedia: {
-          paddingTop: '56.25%', // 16:9
+          paddingTop: '95.25%', // 16:9
+          border:'.5px solid #2a2a2a',
+          borderRadius: '5px',
      },
      cardContent: {
           flexGrow: 1,
@@ -62,6 +65,12 @@ const useStyles = makeStyles((theme) => ({
      },
      textMargin: {
           marginTop: '2%',
+          color: '#FFFFFF'
+     },
+     addToFavorites: {
+          marginTop: '5%',
+          backgroundColor: 'primary',
+          fontWeight: 'bolder',
      }
 }));
 
@@ -79,7 +88,7 @@ export default function DisplaySearched() {
           axios.get(dummyDataUrl)
                .then(response => {
                     // console.log('working')
-                    console.log(response.data)
+                    // console.log(response.data)
                     setSongInfo(response.data)
                })
                .catch(err => {
@@ -97,7 +106,7 @@ export default function DisplaySearched() {
      return (
           <Container className={classes.cardGrid} maxWidth="md">
                <CssBaseline />
-               <Grid container spacing={4}>
+               <Grid container spacing={7}>
                     {songInfo.map((specificSongInfo, idx) => (
                          <Grid item key={idx} xs={12} sm={6} md={4}>
                               <Card className={classes.card}>
@@ -107,18 +116,21 @@ export default function DisplaySearched() {
                                         title="Image title"
                                    />
                                    <CardContent className={classes.cardContent}>
-                                        <Typography gutterBottom variant="h5" component="h2" className={classes.textMargin}>
+                                        <Typography gutterBottom variant="h4" component="h2" className={classes.textMargin}>
                                              {specificSongInfo.song}
                                         </Typography>
-                                        <Typography className={classes.textMargin}>
+                                        <Typography variant='h6' className={classes.textMargin}>
                                              {specificSongInfo.artist}
                                         </Typography>
-                                        <Button variant='outlined'>
+                                        <Typography className={classes.textMargin}>
+                                             {specificSongInfo.album}
+                                        </Typography>
+                                        <Button variant='contained' className={classes.addToFavorites}>
                                              Add to Favorites
                                         </Button>
                                    </CardContent>
                                    <CardActions>                                        
-                                        <iframe src={`https://embed.spotify.com/?uri=spotify:track:4musm1R7AMRIUrdsIr1jAp&view=coverart&theme=black`} height='80' width='100%'></iframe>
+                                        <iframe src={`https://embed.spotify.com/?uri=spotify:track:${specificSongInfo.song_id}&view=coverart&theme=black`} height='55%' width='100%'></iframe>
                                    </CardActions>
                               </Card>
                          </Grid>

@@ -13,6 +13,7 @@ import { Route, Switch } from 'react-router-dom'
 import { Link as RouterLink } from 'react-router-dom'
 import TextField from '@material-ui/core/TextField';
 import logo from './logo/logo.png'
+import { NavLink } from 'react-router-dom'
 
 
 
@@ -73,7 +74,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     '& > *': {
       margin: theme.spacing(1),
-      width: '25ch',
+      width: '50ch',
     },
   },
   image: {
@@ -81,11 +82,22 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: '30px',
     boxShadow:'0 5px 5px rgba(0,0,0,0.6)',
     marginBottom:'5%',
+  },
+  container: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
   }
 }));
 
 
-export default function HomePage() {
+export default function HomePage(props) {
+  const {
+    searchFormValue,
+    onSearch,
+    onSearchInputChange,
+  } = props
+
   const classes = useStyles();
 
   return (
@@ -96,25 +108,30 @@ export default function HomePage() {
         {/* Hero unit */}
         <div className={classes.heroContent}>
         <img src={logo} className={classes.image} width='60%'/>
-          <Container maxWidth="sm">
+          <Container className={classes.container} maxWidth="sm">
           
-            <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
-              Spotify Song Suggester
-            </Typography>
             
             <Typography variant="h3" align="center" color="textSecondary" paragraph>
-              Welcome 'user'
+              Welcome
             </Typography>
             <Typography variant="h5" align="center" color="textSecondary" paragraph>
               Search for new music - the smart way
             </Typography>
-
+            <form className={classes.root} noValidate autoComplete="off">
+                  <TextField name="song" onChange={onSearchInputChange} id="outlined-basic" label="Search by Song Title" variant="outlined" value={searchFormValue.song}/>
+                    
+                    <TextField name="artist" onChange={onSearchInputChange} id="outlined-basic" label="Search by Artist" variant="outlined" value={searchFormValue.artist} />
+                    
+                </form>
             <div className={classes.heroButtons}>
+           
               <Grid container spacing={2} justify="center">
+              
                 <Grid item>
+                  
                  
-                    <Button className='searchButtons' variant="contained" color="primary">
-                    <RouterLink className='searchButtons' to='/home/search'>
+                    <Button onClick={onSearch} className='searchButtons' variant="contained" color="primary">
+                    <RouterLink style={{ textDecoration: 'none', color:'white' }} className='searchButtons' to='/home/search'>
                       Search For New Songs
                       </RouterLink>
                   </Button>
@@ -126,10 +143,7 @@ export default function HomePage() {
                     Secondary action
                   </Button>
                 </Grid>
-                <form className={classes.root} noValidate autoComplete="off">
-                  <TextField id="outlined-basic" label="Search Artist" variant="outlined" />
-                  <TextField id="outlined-basic" label="Search Song Title" variant="outlined" />
-                </form>
+               
               </Grid>
             </div>
           </Container>
