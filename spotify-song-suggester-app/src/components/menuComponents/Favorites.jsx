@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
-import Headset from '@material-ui/icons/Headset'; 
+import Headset from '@material-ui/icons/Headset';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -18,22 +18,12 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import axios from 'axios'
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Suggestions from './Suggestions'
 
 const dummyDataUrl = 'https://spotify-song-suggester-4.herokuapp.com/dummy_data'
 
 
-function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {'Copyright © '}
-      <Link color="inherit" href="https://material-ui.com/">
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
+
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
@@ -85,38 +75,48 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     justifyContent: 'center',
     '& > * + *': {
-         marginLeft: theme.spacing(0),
+      marginLeft: theme.spacing(0),
     },
-},
+  },
 }));
 
-
-export default function HomePage() {
+const initialSuggestedSearch = {
+  album: '',
+  artist: '',
+  cover_art: '',
+  song: '',
+  song_id: '',
+}
+export default function Favorites() {
   const classes = useStyles();
   const [favoritesInfo, setFavoritesInfo] = useState([])
+
 
 
   useEffect(() => {
 
     axios.get(dummyDataUrl)
-         .then(response => {
-              // console.log('working')
-              console.log(response.data)
-              setFavoritesInfo(response.data)
-         })
-         .catch(err => {
-              console.log('error', err)
-         })
-}, []
-)
-
-if (!favoritesInfo.length) {
-  return (
-       <div className={classes.favoritesRoot}>
-            <CircularProgress />
-       </div>
+      .then(response => {
+        // console.log('working')
+        console.log(response.data)
+        setFavoritesInfo(response.data)
+      })
+      .catch(err => {
+        console.log('error', err)
+      })
+  }, []
   )
-}
+
+
+
+
+  if (!favoritesInfo.length) {
+    return (
+      <div className={classes.favoritesRoot}>
+        <CircularProgress />
+      </div>
+    )
+  }
 
   return (
     <React.Fragment>
@@ -129,25 +129,26 @@ if (!favoritesInfo.length) {
             <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
               My Favorites
             </Typography>
-            
+
 
             <div className={classes.heroButtons}>
-            <form className={classes.root} noValidate autoComplete="off" >
-                  <TextField id="outlined-basic" label="Add Spotify URI" variant="outlined" />
+              <form className={classes.root} noValidate autoComplete="off" >
+                <TextField id="outlined-basic" label="Add Spotify URI" variant="outlined" />
 
-                </form>
+              </form>
               <Grid container spacing={2} justify="center">
-                
+
                 <Grid item>
-                 
-                    <Button className='searchButtons' variant="contained" color="primary">
+
+                  <Button className='searchButtons' variant="contained" color="primary">
                     Add to favorites
                   </Button>
-                  
+
+
 
                 </Grid>
-                
-              
+
+
               </Grid>
             </div>
           </Container>
@@ -155,51 +156,54 @@ if (!favoritesInfo.length) {
         {/* end hero unit */}
       </main>
 
-{/* begin my favorites cards */}
+      {/* begin my favorites cards */}
 
-<Container className={classes.cardGrid} maxWidth="md">
-               <CssBaseline />
-               <Grid container spacing={4}>
-                    {favoritesInfo.map((favorite, idx) => (
-                         <Grid item key={idx} xs={12} sm={6} md={4}>
-                              <Card className={classes.card}>
-                                   <CardMedia
-                                        className={classes.cardMedia}
-                                        image={favorite.cover_art}
-                                        title="Image title"
-                                   />
-                                   <CardContent className={classes.cardContent}>
-                                        <Typography gutterBottom variant="h5" component="h2" className={classes.textMargin}>
-                                             {favorite.song}
-                                        </Typography>
-                                        <Typography variant='h6' className={classes.textMargin}>
-                                             {favorite.artist}
-                                        </Typography>
-                                        <Typography className={classes.textMargin}>
-                                             {favorite.album}
-                                        </Typography>
-                                        <Button variant='outlined'>
-                                             Remove From Favorites
+      <Container className={classes.cardGrid} maxWidth="md">
+        <CssBaseline />
+        <Grid container spacing={4}>
+          {favoritesInfo.map((favorite, idx) => (
+            <Grid item key={idx} xs={12} sm={6} md={4}>
+              <Card className={classes.card}>
+                <CardMedia
+                  className={classes.cardMedia}
+                  image={favorite.cover_art}
+                  name='cover_art'
+                  value={favorite.cover_art}
+                  title={favorite.album}
+                />
+                <CardContent className={classes.cardContent}>
+                  <Typography gutterBottom variant="h5" component="h2" className={classes.textMargin} name='song' value={favorite.song}>
+                    {favorite.song}
+                  </Typography>
+                  <Typography variant='h6' className={classes.textMargin} name='artist' value={favorite.artist}>
+                    {favorite.artist}
+                  </Typography>
+                  <Typography className={classes.textMargin} name='album' value={favorite.album}>
+                    {favorite.album}
+                  </Typography>
+                  <Button  variant='outlined'>
+                    <RouterLink style={{ textDecoration: 'none', color: '#1DB954' }} className='searchButtons' to='/favorites/suggestions'>
+                      Find Similar Songs
+                                             </RouterLink>
+                  </Button>
+                  <Button variant='outlined'>
+                    Remove From Favorites
                                         </Button>
-                                   </CardContent>
-                                  
-                              </Card>
-                         </Grid>
-                    ))}
-               </Grid>
-          </Container>
+                </CardContent>
+                
+              </Card>
+              <Route path='/favorites/suggestions'>
+                <Suggestions cardValue={favoritesInfo} />
 
-      {/* Footer */}
-      <footer className={classes.footer} >
-        <Typography variant="h6" align="center" gutterBottom >
-          Footer
-        </Typography>
-        <Typography variant="subtitle1" align="center"  component="p">
-          Something here to give the footer a purpose!
-        </Typography>
-        <Copyright />
-      </footer>
-      {/* End footer */}
+                  </Route>
+            </Grid>
+            
+          ))}
+        </Grid>
+      </Container>
+
+
+
     </React.Fragment>
   );
 }

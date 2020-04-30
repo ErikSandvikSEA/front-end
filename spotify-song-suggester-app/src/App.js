@@ -21,6 +21,7 @@ import Link from '@material-ui/core/Link';
 import MenuTab from './components/menuComponents/MenuTab'
 import Favorites from './components/menuComponents/Favorites'
 import NavBar from './components/NavBar'
+import Suggestions from './components/menuComponents/Suggestions'
 
 
 import { v4 as uuid } from 'uuid'
@@ -32,8 +33,25 @@ const getUrl='https://api.github.com/users/octocat'
 const dummyDataUrl = 'https://spotify-song-suggester-4.herokuapp.com/dummy_data'
 const localServerUrl = 'http://localhost:4000/api/auth/register'
 
+function Copyright() {
+  return (
+    <Typography variant="body2" color="textSecondary" align="center">
+      {'Copyright © '}
+      <Link color="inherit" href="https://material-ui.com/">
+      </Link>{' '}
+      {new Date().getFullYear()}
+      {'.'}
+    </Typography>
+  );
+}
+
+
 const initialSearchFormValue = {
   song: '',
+  artist: '',
+}
+const initialSearchFormErrors = {
+  song: 'Please enter both song title and artist',
   artist: '',
 }
 const initialFormValues = {
@@ -67,6 +85,16 @@ const formSchema = yup.object().shape({
     )
 })
 
+const searchFormSchema = yup.object().shape({
+  song: yup
+  .string()
+  .required('Song Title is Required')
+  .min(2, 'Song Title is Required'),
+  artist: yup
+  .string()
+  .required('Artist name is required')
+  .min(2, 'Artist name is required'),
+})
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
@@ -111,6 +139,8 @@ export default function App() {
   const [formDisabled, setFormDisabled] = useState(true)
   const [searchFormValue, setSearchFormValue ] = useState(initialSearchFormValue)
   const [searches, setSearches] = useState([])
+  const [searchFormErrors, setSearchFormErrors] = useState(initialSearchFormErrors)
+  const [searchFormDisabled, setSearchFormDisabled] = useState(true)
 
 
   // useEffect(() => {
@@ -140,11 +170,8 @@ export default function App() {
   }
 
 
-
-
-
-  const postUser = () => {
-    axios.post(postUrl)
+  const postUser = (user) => {
+    axios.post(postTestUrl, user)
       .then(res => {
         console.log('the response from posting')
         setUsers([...users, res.data])
@@ -153,6 +180,8 @@ export default function App() {
         console.log('error', err)
       })
   }
+
+  
 
     const onSearch = e => {
       e.preventDefault()
@@ -166,15 +195,12 @@ export default function App() {
     }
 
 
-    const onSearchInputChange = e => {
-      const searchName = e.target.name
-      const searchValue = e.target.value
-  
-      setSearchFormValue({
-        ...searchFormValue,
-        [searchName]: searchValue,
-      })
-    }
+    useEffect(() => {
+      searchFormSchema.isValid(searchFormValue)
+        .then(valid => {
+          setSearchFormDisabled(!valid)
+        })
+    }, [searchFormValue])
 
   useEffect(() => {
     formSchema.isValid(formValues)
@@ -204,8 +230,6 @@ export default function App() {
   const onInputChange = e => {
     const name = e.target.name
     const value = e.target.value
-
-
     yup
       .reach(formSchema, name)
       .validate(value)
@@ -225,6 +249,32 @@ export default function App() {
     setFormValues({
       ...formValues,
       [name]: value,
+    })
+  }
+
+  
+  const onSearchInputChange = e => {
+    const searchName = e.target.name
+    const searchValue = e.target.value
+    yup
+    .reach(searchFormSchema, searchName)
+    .validate(searchValue)
+    .then(valid => {
+      //clear errors
+      setSearchFormErrors({
+        ...searchFormErrors,
+        [searchName]: '',
+      })
+    })
+    .catch(err => {
+      setSearchFormErrors({
+        ...searchFormErrors,
+        [searchName]: err.errors[0]
+      })
+    })
+    setSearchFormValue({
+      ...searchFormValue,
+      [searchName]: searchValue,
     })
   }
   const classes = useStyles();
@@ -248,6 +298,9 @@ export default function App() {
         
         />
       </Route>
+      <Route exact path='/favorites/suggestions'>
+           <Suggestions />
+      </Route>
       <Route exact path='/favorites'>
            <Favorites
             values={formValues}
@@ -262,6 +315,8 @@ export default function App() {
           searchFormValue={searchFormValue}
           onSearch={onSearch}
           onSearchInputChange={onSearchInputChange}
+          errors={searchFormErrors}
+          disabled={searchFormDisabled}
         />
       </Route>
 
@@ -276,6 +331,15 @@ export default function App() {
     
     
  </Switch>
+ {/* Footer */}
+ <footer className={classes.footer} >
+
+        <Typography variant="subtitle1" align="center"  component="p">
+          Spotify Song Suggester
+        </Typography>
+        <Copyright />
+      </footer>
+      {/* End footer */}
 
     </div>
   );
