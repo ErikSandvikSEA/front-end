@@ -24,6 +24,7 @@ import NavBar from './components/NavBar'
 
 
 import { v4 as uuid } from 'uuid'
+const noHttpsPostTestUrl = 'http://spotify-song-suggester-project.herokuapp.com/api/auth/register'
 
 const postTestUrl = 'https://spotify-song-suggester-project.herokuapp.com/api/auth/register'
 const postUrl = 'https://reqres.in/api/users'
@@ -142,8 +143,8 @@ export default function App() {
 
 
 
-  const postUser = user => {
-    axios.post(localServerUrl, user)
+  const postUser = () => {
+    axios.post(postUrl)
       .then(res => {
         console.log('the response from posting')
         setUsers([...users, res.data])
