@@ -6,11 +6,22 @@ import * as serviceWorker from './serviceWorker';
 import {BrowserRouter  as Router} from 'react-router-dom'
 import { ThemeProvider } from '@material-ui/core/styles'
 import appTheme from './themes'
+
+import { createStore, applyMiddleware } from 'redux'; 
+import { Provider } from 'react-redux'; 
+import thunk from 'redux-thunk'; 
+
+import rootReducer from './components/store/reducers'; 
+
+const store = createStore(rootReducer, applyMiddleware(thunk)); 
+
 render(
 
     <ThemeProvider theme={appTheme}>
       <Router >
-        <App />
+        <Provider store={store}>
+          <App />
+        </Provider>
       </Router>
     </ThemeProvider>
   

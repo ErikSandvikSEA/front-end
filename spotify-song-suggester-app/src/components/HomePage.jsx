@@ -117,9 +117,9 @@ export default function HomePage(props) {
             <form className={classes.root} noValidate autoComplete="off">
                   <TextField name="song" onChange={onSearchInputChange} id="outlined-basic" label="Search by Song Title" variant="outlined" value={searchFormValue.song}/>
                     
-                    <TextField name="artist" onChange={onSearchInputChange} id="outlined-basic" label="Search by Artist" variant="outlined" value={searchFormValue.artist} />
+                  <TextField name="artist" onChange={onSearchInputChange} id="outlined-basic" label="Search by Artist" variant="outlined" value={searchFormValue.artist} />
                     
-                </form>
+            </form>
             <div className={classes.heroButtons}>
            
               <Grid container spacing={2} justify="center">

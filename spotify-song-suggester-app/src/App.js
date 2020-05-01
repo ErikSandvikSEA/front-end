@@ -23,16 +23,14 @@ import Favorites from './components/menuComponents/Favorites'
 import NavBar from './components/NavBar'
 import Suggestions from './components/menuComponents/Suggestions'
 
+import { connect } from 'react-redux'; 
+
+import { fetchUser, fetchSuggestions } from './components/store/actions/SpotifyActions'; 
+
 import { useHistory } from 'react-router-dom'
 
 import { v4 as uuid } from 'uuid'
-const noHttpsPostTestUrl = 'http://spotify-song-suggester-project.herokuapp.com/api/auth/register'
 
-const postTestUrl = 'https://spotify-song-suggester-project.herokuapp.com/api/auth/register'
-const postUrl = 'https://reqres.in/api/users'
-const getUrl='https://api.github.com/users/octocat'
-const dummyDataUrl = 'https://spotify-song-suggester-4.herokuapp.com/dummy_data'
-const localServerUrl = 'http://localhost:4000/api/auth/register'
 
 function Copyright() {
   return (
@@ -133,16 +131,16 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-export default function App() {
-  const [users, setUsers] = useState([])
+function App(props) {
+
   const [formValues, setFormValues] = useState(initialFormValues)
   const [formErrors, setFormErrors] = useState(initialFormErrors)
   const [formDisabled, setFormDisabled] = useState(true)
   const [searchFormValue, setSearchFormValue ] = useState(initialSearchFormValue)
-  const [searches, setSearches] = useState({})
+  // const [searches, setSearches] = useState({})
   const [searchFormErrors, setSearchFormErrors] = useState(initialSearchFormErrors)
   const [searchFormDisabled, setSearchFormDisabled] = useState(true)
-
+  const [favorite, setFavorite] = useState([])
   const [newSearch, setNewSearch] = useState({})
   const history = useHistory()
 
@@ -161,6 +159,14 @@ export default function App() {
   // }, []
   // )
 
+  const noHttpsPostTestUrl = 'http://spotify-song-suggester-project.herokuapp.com/api/auth/register'
+
+  const postTestUrl = 'https://spotify-song-suggester-project.herokuapp.com/api/auth/register'
+  const postUrl = 'https://reqres.in/api/users'
+  const getUrl='https://api.github.com/users/octocat'
+  const dummyDataUrl = 'https://spotify-song-suggester-4.herokuapp.com/dummy_data'
+  const localServerUrl = 'http://localhost:4000/api/auth/register'
+
 
   // const postSearch = search => {
   //   axios.post(postUrl, search)
@@ -174,27 +180,18 @@ export default function App() {
   // }
 
 
-  const getSearch = search => {
-    axios.get(`https://spotify-song-suggester-4.herokuapp.com/search_something/${search.artist}/${search.song}`)
-      .then(response => {
-        console.log(response.data)
-        setSearches(response.data)
-      })
-      .catch(err => {
-        console.log(err)
-      })
-  }
+  // const getSearch = search => {
+  //   axios.get(`https://spotify-song-suggester-4.herokuapp.com/search_something/${search.artist}/${search.song}`)
+  //     .then(response => {
+  //       console.log(response.data)
+  //       setSearches(response.data)
+  //     })
+  //     .catch(err => {
+  //       console.log(err)
+  //     })
+  // }
 
-  const postUser = (user) => {
-    axios.post(postTestUrl, user)
-      .then(res => {
-        console.log('the response from posting')
-        setUsers([...users, res.data])
-      })
-      .catch(err => {
-        console.log('error', err)
-      })
-  }
+
 
   
 
@@ -228,7 +225,7 @@ export default function App() {
 
     // 🔥 STEP 6 - WE NEED TO POST NEW USER TO THE API!
     console.log(newUser)
-    postUser(newUser)
+    // postUser(newUser)
     setFormValues(initialFormValues)
   }
 
@@ -237,6 +234,7 @@ export default function App() {
   const onInputChange = e => {
     const name = e.target.name
     const value = e.target.value
+    e.persist(); 
     yup
       .reach(formSchema, name)
       .validate(value)
@@ -288,6 +286,8 @@ export default function App() {
 
   }
 
+
+
   useEffect(() => {
     setSearchFormValue(
       searchFormValue
@@ -304,9 +304,12 @@ export default function App() {
     //  )
     history.push('/home/search')
     console.log(newSearch)
-    getSearch(searchFormValue)
+    props.fetchSuggestions(searchFormValue)
+    console.log(props.favorites,'this is favorites')
     setSearchFormValue(initialSearchFormValue)
   }
+
+  console.log(props)
   const classes = useStyles();
   return (
 
@@ -318,7 +321,7 @@ export default function App() {
         
     <Switch>
 
-      <Route exact path='/signup'>
+      <Route exact path='/signup' component={SignUp}>
         <SignUp
           values={formValues}
           onSignUp={onSignUp}
@@ -335,6 +338,7 @@ export default function App() {
            <Favorites
             values={formValues}
             onInputChange={onInputChange}
+            favorite={favorite}
            />
       </Route>
       {/* <Route exact path='/home/search'>
@@ -345,7 +349,8 @@ export default function App() {
       
       <Route  path='/home/search' >
           <DisplaySearched
-          searches={searches}
+          searches={props.suggestions}
+          setFavorite={setFavorite}
           
           />
         </Route>
@@ -384,4 +389,20 @@ export default function App() {
     </div>
   );
 }
+
+const mapStateToProps = state => {
+  return {
+    users: state.spotify.users, 
+    suggestions: state.spotify.suggestions, 
+    isRendering: state.spotify.isRendering, 
+    error: state.spotify.error, 
+  }
+}
+
+export default connect(
+  mapStateToProps, 
+  { fetchUser, fetchSuggestions }
+)(App); 
+
+
 

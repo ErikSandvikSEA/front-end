@@ -119,92 +119,9 @@ export default function Favorites() {
   }
 
   return (
-    <React.Fragment>
-
-
-      <main>
-        {/* Hero unit */}
-        <div className={classes.heroContent}>
-          <Container maxWidth="sm">
-            <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
-              My Favorites
-            </Typography>
-
-
-            <div className={classes.heroButtons}>
-              <form className={classes.root} noValidate autoComplete="off" >
-                <TextField id="outlined-basic" label="Add Spotify URI" variant="outlined" />
-
-              </form>
-              <Grid container spacing={2} justify="center">
-
-                <Grid item>
-
-                  <Button className='searchButtons' variant="contained" color="primary">
-                    Add to favorites
-                  </Button>
-
-
-
-                </Grid>
-
-
-              </Grid>
-            </div>
-          </Container>
-        </div>
-        {/* end hero unit */}
-      </main>
-
-      {/* begin my favorites cards */}
-
-      <Container className={classes.cardGrid} maxWidth="md">
-        <CssBaseline />
-        <Grid container spacing={4}>
-          {favoritesInfo.map((favorite, idx) => (
-            <Grid item key={idx} xs={12} sm={6} md={4}>
-              <Card className={classes.card}>
-                <CardMedia
-                  className={classes.cardMedia}
-                  image={favorite.cover_art}
-                  name='cover_art'
-                  value={favorite.cover_art}
-                  title={favorite.album}
-                />
-                <CardContent className={classes.cardContent}>
-                  <Typography gutterBottom variant="h5" component="h2" className={classes.textMargin} name='song' value={favorite.song}>
-                    {favorite.song}
-                  </Typography>
-                  <Typography variant='h6' className={classes.textMargin} name='artist' value={favorite.artist}>
-                    {favorite.artist}
-                  </Typography>
-                  <Typography className={classes.textMargin} name='album' value={favorite.album}>
-                    {favorite.album}
-                  </Typography>
-                  <Button  variant='outlined'>
-                    <RouterLink style={{ textDecoration: 'none', color: '#1DB954' }} className='searchButtons' to='/favorites/suggestions'>
-                      Find Similar Songs
-                                             </RouterLink>
-                  </Button>
-                  <Button variant='outlined'>
-                    Remove From Favorites
-                                        </Button>
-                </CardContent>
-                
-              </Card>
-              <Route path='/favorites/suggestions'>
-                <Suggestions cardValue={favoritesInfo} />
-
-                  </Route>
-            </Grid>
-            
-          ))}
-        </Grid>
-      </Container>
-
-
-
-    </React.Fragment>
-  );
+    <div>
+      <h2>Favorites</h2>
+    </div>
+  )
 }
 

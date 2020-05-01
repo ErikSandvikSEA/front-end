@@ -16,6 +16,9 @@ import axios from 'axios'
 import CircularProgress from '@material-ui/core/CircularProgress';
 import * as yup from 'yup'
 
+import { connect } from 'react-redux'; 
+import { useParams } from 'react-router-dom'; 
+
 
 
 const useStyles = makeStyles((theme) => ({
@@ -101,16 +104,16 @@ const searchFormSchema = yup.object().shape({
    })
 
 
-export default function DisplaySearched(props) {
+function DisplaySearched(props) {
 
-     
+     const { id } = useParams(); 
 
-     const {searches} = props
+     const { searches, setFavorite } = props
 
      
      const classes = useStyles();
 
-     const [songInfo, setSongInfo] = useState([])
+     // const [songInfo, setSongInfo] = useState([])
 
 
      // useEffect(() => {
@@ -142,7 +145,7 @@ export default function DisplaySearched(props) {
      // )
 
 
-     let sampleArray = []
+     let sampleArray = []; 
      for(let obj in searches){
           sampleArray.push(searches[obj])
      }
@@ -153,14 +156,33 @@ export default function DisplaySearched(props) {
      //           </div>
      //      )
      // }
+
+     const makeFavorite = (songId) => {
+          // event.preventDefault(); 
+
+          axios
+          .post(`https://spotify-song-suggester-project.herokuapp.com/api/songs/${songId}`)
+          .then(res => {
+               console.log('the added favorite', res.data)
+               setFavorite(res.data)
+          })
+          .catch(err => {
+               console.log('error in DS', err); 
+          })
+     }
+
+
+
+
      
-     console.log(sampleArray)
+     console.log('the sample array with suggestions redux',sampleArray)
      // console.log(searches)
      return (
           <Container className={classes.cardGrid} maxWidth="md">
                <CssBaseline />
                <Grid container spacing={7}>
-                    {sampleArray.map((specificSongInfo, idx) => (
+                    {sampleArray.map((specificSongInfo, idx) => ( 
+                         
                          <Grid item key={idx} xs={12} sm={6} md={4}>
                               <Card className={classes.card}>
                                    <CardMedia
@@ -168,6 +190,8 @@ export default function DisplaySearched(props) {
                                         image={specificSongInfo.album_cover}
                                         title="Image title"
                                    />
+                                   
+                                   
                                    <CardContent className={classes.cardContent}>
                                         <Typography gutterBottom variant="h4" component="h2" className={classes.textMargin}>
                                              {specificSongInfo.track_name}
@@ -178,7 +202,7 @@ export default function DisplaySearched(props) {
                                         <Typography className={classes.textMargin}>
                                              {specificSongInfo.album_name}
                                         </Typography>
-                                        <Button variant='contained' className={classes.addToFavorites}>
+                                        <Button onClick={() => makeFavorite(specificSongInfo.track_id)} variant='contained' className={classes.addToFavorites}>
                                              Add to Favorites
                                         </Button>
                                    </CardContent>
@@ -187,9 +211,21 @@ export default function DisplaySearched(props) {
                                    </CardActions>
                               </Card>
                          </Grid>
+                         
                     ))}
                </Grid>
           </Container>
 
      )
 }
+ 
+const mapStateToProps = state => {
+     return{ 
+          suggestions: state.spotify.suggestions
+     }
+}
+
+export default connect(
+     mapStateToProps, 
+     {}
+)(DisplaySearched)
