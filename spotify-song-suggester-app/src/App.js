@@ -131,7 +131,7 @@ const useStyles = makeStyles((theme) => ({
 
 
 function App(props) {
-  const [users, setUsers] = useState([])
+
   const [formValues, setFormValues] = useState(initialFormValues)
   const [formErrors, setFormErrors] = useState(initialFormErrors)
   const [formDisabled, setFormDisabled] = useState(true)
@@ -190,16 +190,7 @@ function App(props) {
       })
   }
 
-  const postUser = (user) => {
-    axios.post(postTestUrl, user)
-      .then(res => {
-        console.log('the response from posting')
-        setUsers([...users, res.data])
-      })
-      .catch(err => {
-        console.log('error', err)
-      })
-  }
+
 
   
 
@@ -233,7 +224,7 @@ function App(props) {
 
     // 🔥 STEP 6 - WE NEED TO POST NEW USER TO THE API!
     console.log(newUser)
-    postUser(newUser)
+    // postUser(newUser)
     setFormValues(initialFormValues)
   }
 
@@ -242,6 +233,7 @@ function App(props) {
   const onInputChange = e => {
     const name = e.target.name
     const value = e.target.value
+    e.persist(); 
     yup
       .reach(formSchema, name)
       .validate(value)
@@ -264,32 +256,40 @@ function App(props) {
     })
   }
 
-  
-  const onSearchInputChange = e => {
-    const searchName = e.target.name
-    const searchValue = e.target.value
-  
+  const validateChange = e => {
+
     yup
-    .reach(searchFormSchema, searchName)
-    .validate(searchValue)
+    .reach(searchFormSchema, e.target.name)
+    .validate(e.target.value)
     .then(valid => {
       //clear errors
       setSearchFormErrors({
         ...searchFormErrors,
-        [searchName]: '',
+        [e.target.name]: '',
       })
     })
     .catch(err => {
       setSearchFormErrors({
         ...searchFormErrors,
-        [searchName]: err.errors[0]
+        [e.target.name]: err.errors[0]
       })
     })
-    setSearchFormValue({
-      ...searchFormValue,
-      [searchName]: searchValue,
-    })
-    console.log(searchFormValue)
+  }  
+
+
+  const onSearchInputChange = e => {
+    // const searchName = e.target.name
+    // const searchValue = e.target.value
+    e.persist(); 
+
+    const newSongSearch = {
+      ...searchFormValue, 
+      [e.target.name]: e.target.value
+    }
+  
+    validateChange(e); 
+    setSearchFormValue(newSongSearch)
+    console.log('the search form', searchFormValue)
 
   }
 
@@ -316,7 +316,7 @@ function App(props) {
         
     <Switch>
 
-      <Route exact path='/signup'>
+      <Route exact path='/signup' component={SignUp}>
         <SignUp
           values={formValues}
           onSignUp={onSignUp}

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -15,8 +15,14 @@ import Container from '@material-ui/core/Container';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/alert';
 import { Link as RouterLink, NavLink } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'; 
 
-function Copyright() {
+
+import { connect } from 'react-redux'; 
+
+import { fetchUser, sendUser } from './store/actions/SpotifyActions'; 
+
+function Copyright(props) {
      return (
           <Typography variant="body2" color="textSecondary" align="center">
                {'Copyright © '}
@@ -70,11 +76,9 @@ const useStyles = makeStyles((theme) => ({
 
 
   
-
-export default function SignUp(props) {
+function SignUp(props) {
      const {
           values,
-          onSignUp,
           disabled,
           errors,
           onInputChange,
@@ -83,8 +87,21 @@ export default function SignUp(props) {
 
      const classes = useStyles();
 
+     const history = useHistory(); 
 
-    
+     // const [users, setUsers] = useState([])
+     useEffect(() => {
+          console.log('this is props', props)
+          props.fetchUser(); 
+     })
+
+     const formSubmit = e => {
+          e.preventDefault(); 
+          props.sendUser(values);
+          history.push('/'); 
+     }
+
+
 
      return (
           <Container className={classes.container} component="main" maxWidth="xs">
@@ -96,7 +113,7 @@ export default function SignUp(props) {
                     <Typography component="h1" variant="h5">
                          Sign up
                     </Typography>
-                    <form className={classes.form} noValidate>
+                    <form onSubmit={formSubmit} className={classes.form} noValidate>
                          <Grid container spacing={2}>
                               <Grid item xs={12}>
                                    <TextField
@@ -155,7 +172,6 @@ export default function SignUp(props) {
                               variant="contained"
                               color="inherit"
                               className={classes.submit}
-                              onClick={onSignUp}
                               disabled={disabled}
                          ><RouterLink to='/' className={classes.linkButtons}>
                               Sign Up
@@ -179,3 +195,18 @@ export default function SignUp(props) {
           </Container>
      );
 }
+
+
+const mapStateToProps = state => {
+     return {
+          users: state.spotify.users, 
+          isRendering: state.spotify.isRendering,
+          error: state.spotify.error
+     }
+}
+
+
+export default connect(
+     mapStateToProps, 
+     { fetchUser, sendUser }
+)(SignUp); 
