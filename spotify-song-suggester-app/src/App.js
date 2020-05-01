@@ -174,7 +174,7 @@ export default function App() {
 
 
   const getSearch = search => {
-    axios.get(`https://spotify-song-suggester-4.herokuapp.com/search_something/${newSearch.artist}/${newSearch.song}`)
+    axios.get(`https://spotify-song-suggester-4.herokuapp.com/search_something/${search.artist}/${search.song}`)
       .then(response => {
         console.log(response.data)
         setSearches(response.data)
@@ -197,18 +197,7 @@ export default function App() {
 
   
 
-    const onSearch = e => {
-      e.preventDefault()
-       setNewSearch({
-        song: searchFormValue.song.replace('/\s/', '%20'),
-        artist: searchFormValue.artist.replace('/\s/', '%20')
-       }
-       )
-      
-      console.log(newSearch)
-      getSearch(newSearch)
-      setSearchFormValue(initialSearchFormValue)
-    }
+    
     
 
 
@@ -273,6 +262,7 @@ export default function App() {
   const onSearchInputChange = e => {
     const searchName = e.target.name
     const searchValue = e.target.value
+  
     yup
     .reach(searchFormSchema, searchName)
     .validate(searchValue)
@@ -293,6 +283,21 @@ export default function App() {
       ...searchFormValue,
       [searchName]: searchValue,
     })
+    console.log(searchFormValue)
+
+  }
+
+  const onSearch = e => {
+    e.preventDefault()
+     setNewSearch({
+      song: searchFormValue.song.replace('/\s/', '%20'),
+      artist: searchFormValue.artist.replace('/\s/', '%20')
+     }
+     )
+    
+    console.log(newSearch)
+    getSearch(newSearch)
+    setSearchFormValue(initialSearchFormValue)
   }
   const classes = useStyles();
   return (
