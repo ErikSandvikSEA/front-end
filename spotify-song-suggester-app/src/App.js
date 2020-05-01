@@ -23,6 +23,7 @@ import Favorites from './components/menuComponents/Favorites'
 import NavBar from './components/NavBar'
 import Suggestions from './components/menuComponents/Suggestions'
 
+import { useHistory } from 'react-router-dom'
 
 import { v4 as uuid } from 'uuid'
 const noHttpsPostTestUrl = 'http://spotify-song-suggester-project.herokuapp.com/api/auth/register'
@@ -143,7 +144,7 @@ export default function App() {
   const [searchFormDisabled, setSearchFormDisabled] = useState(true)
 
   const [newSearch, setNewSearch] = useState({})
-
+  const history = useHistory()
 
 
   // useEffect(() => {
@@ -258,7 +259,7 @@ export default function App() {
     })
   }
 
-  
+
   const onSearchInputChange = e => {
     const searchName = e.target.name
     const searchValue = e.target.value
@@ -287,16 +288,23 @@ export default function App() {
 
   }
 
+  useEffect(() => {
+    setSearchFormValue(
+      searchFormValue
+    )
+    console.log(searchFormValue)
+  },[searchFormValue])
+  
   const onSearch = e => {
     e.preventDefault()
-     setNewSearch({
-      song: searchFormValue.song.replace('/\s/', '%20'),
-      artist: searchFormValue.artist.replace('/\s/', '%20')
-     }
-     )
-    
+    //  setNewSearch({
+    //   song: searchFormValue.song.replace('/\s/', '%20'),
+    //   artist: searchFormValue.artist.replace('/\s/', '%20')
+    //  }
+    //  )
+    history.push('/home/search')
     console.log(newSearch)
-    getSearch(newSearch)
+    getSearch(searchFormValue)
     setSearchFormValue(initialSearchFormValue)
   }
   const classes = useStyles();
@@ -332,19 +340,23 @@ export default function App() {
       {/* <Route exact path='/home/search'>
           <DisplaySearched />
         </Route> */}
-        <Route exact path='/home/search'>
+
+        
+      
+      <Route  path='/home/search' >
           <DisplaySearched
           searches={searches}
           
           />
         </Route>
-      <Route  path='/home'>
+        <Route exact path='/home'>
         <HomePage 
           searchFormValue={searchFormValue}
           onSearch={onSearch}
           onSearchInputChange={onSearchInputChange}
           errors={searchFormErrors}
           disabled={searchFormDisabled}
+          initialSearchFormValue={initialSearchFormValue}
         />
       </Route>
 
