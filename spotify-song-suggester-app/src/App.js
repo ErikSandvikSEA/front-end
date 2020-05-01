@@ -51,8 +51,8 @@ const initialSearchFormValue = {
   artist: '',
 }
 const initialSearchFormErrors = {
-  song: 'Please enter both song title and artist',
-  artist: '',
+  song: 'Please enter song title and artist name',
+  artist: 'Both are required',
 }
 const initialFormValues = {
   ///// TEXT INPUTS /////
@@ -138,9 +138,12 @@ export default function App() {
   const [formErrors, setFormErrors] = useState(initialFormErrors)
   const [formDisabled, setFormDisabled] = useState(true)
   const [searchFormValue, setSearchFormValue ] = useState(initialSearchFormValue)
-  const [searches, setSearches] = useState([])
+  const [searches, setSearches] = useState({})
   const [searchFormErrors, setSearchFormErrors] = useState(initialSearchFormErrors)
   const [searchFormDisabled, setSearchFormDisabled] = useState(true)
+
+  const [newSearch, setNewSearch] = useState({})
+
 
 
   // useEffect(() => {
@@ -158,17 +161,28 @@ export default function App() {
   // )
 
 
-  const postSearch = search => {
-    axios.post(postUrl, search)
+  // const postSearch = search => {
+  //   axios.post(postUrl, search)
+  //     .then(response => {
+  //       console.log(response)
+  //       setSearches([...searches, response.data])
+  //     })
+  //     .catch(err => {
+  //       console.log(err)
+  //     })
+  // }
+
+
+  const getSearch = search => {
+    axios.get(`https://spotify-song-suggester-4.herokuapp.com/search_something/${newSearch.artist}/${newSearch.song}`)
       .then(response => {
-        console.log(response)
-        setSearches([...searches, response.data])
+        console.log(response.data)
+        setSearches(response.data)
       })
       .catch(err => {
         console.log(err)
       })
   }
-
 
   const postUser = (user) => {
     axios.post(postTestUrl, user)
@@ -185,14 +199,17 @@ export default function App() {
 
     const onSearch = e => {
       e.preventDefault()
-      const newSearch = {
-        song: searchFormValue.song,
-        artist: searchFormValue.artist
-      }
+       setNewSearch({
+        song: searchFormValue.song.replace('/\s/', '%20'),
+        artist: searchFormValue.artist.replace('/\s/', '%20')
+       }
+       )
+      
       console.log(newSearch)
-      postSearch(newSearch)
+      getSearch(newSearch)
       setSearchFormValue(initialSearchFormValue)
     }
+    
 
 
     useEffect(() => {
@@ -310,6 +327,12 @@ export default function App() {
       {/* <Route exact path='/home/search'>
           <DisplaySearched />
         </Route> */}
+        <Route exact path='/home/search'>
+          <DisplaySearched
+          searches={searches}
+          
+          />
+        </Route>
       <Route  path='/home'>
         <HomePage 
           searchFormValue={searchFormValue}
