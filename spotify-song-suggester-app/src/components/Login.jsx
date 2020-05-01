@@ -118,9 +118,8 @@ export default function SignIn(props) {
             fullWidth
             variant="contained"
             color="inherit"
-            className={classes.submit}><RouterLink className={classes.linkButtons} to='/home'>
-            Log In
-            </RouterLink>
+            className={classes.submit}>
+              Log In
           </Button>
           <Grid container>
           

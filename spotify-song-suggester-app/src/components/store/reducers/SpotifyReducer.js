@@ -5,7 +5,7 @@ const initialState = {
     error: '', 
 }
 
-export const spotifyReducer = (state = initialState, action )=> {
+export const spotifyReducer = (state = initialState, action ) => {
     switch (action.type) {
         case 'RENDERING_USER_START': 
         return {
@@ -46,5 +46,7 @@ export const spotifyReducer = (state = initialState, action )=> {
                 ...state, 
                 error: action.payload
             }
+        default : 
+            return state; 
     }
 }

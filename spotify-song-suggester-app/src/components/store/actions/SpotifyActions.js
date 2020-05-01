@@ -3,12 +3,10 @@ import axios from 'axios';
 
 export const fetchUser = () => {
     return dispatch => {
-
-        const signUpUrl = ''; 
-
         dispatch({ type: 'RENDERING_USER_START' })
+        const userUrl = 'https://reqres.in/api/users'; 
         axios
-        .get(signUpUrl)
+        .get('')
         .then( res => {
             console.log('whatever res.data is', res.data); 
             // set the state when receiving property of users
@@ -16,7 +14,7 @@ export const fetchUser = () => {
         })
         .catch(err => {
             console.log(err); 
-            dispatch({ type: 'RENDERING_USER_FAILED', payload: res.data })
+            dispatch({ type: 'RENDERING_USER_FAILED', payload: err.data })
         })
     }
 }

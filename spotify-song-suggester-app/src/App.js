@@ -22,15 +22,13 @@ import MenuTab from './components/menuComponents/MenuTab'
 import Favorites from './components/menuComponents/Favorites'
 import NavBar from './components/NavBar'
 
+import { connect } from 'react-redux'; 
+
+import { fetchUser } from './components/store/actions/SpotifyActions'; 
+
 
 import { v4 as uuid } from 'uuid'
-const noHttpsPostTestUrl = 'http://spotify-song-suggester-project.herokuapp.com/api/auth/register'
 
-const postTestUrl = 'https://spotify-song-suggester-project.herokuapp.com/api/auth/register'
-const postUrl = 'https://reqres.in/api/users'
-const getUrl='https://api.github.com/users/octocat'
-const dummyDataUrl = 'https://spotify-song-suggester-4.herokuapp.com/dummy_data'
-const localServerUrl = 'http://localhost:4000/api/auth/register'
 
 const initialSearchFormValue = {
   song: '',
@@ -104,7 +102,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-export default function App() {
+function App(props) {
   const [users, setUsers] = useState([])
   const [formValues, setFormValues] = useState(initialFormValues)
   const [formErrors, setFormErrors] = useState(initialFormErrors)
@@ -126,6 +124,14 @@ export default function App() {
   //     })
   // }, []
   // )
+
+  const noHttpsPostTestUrl = 'http://spotify-song-suggester-project.herokuapp.com/api/auth/register'
+
+  const postTestUrl = 'https://spotify-song-suggester-project.herokuapp.com/api/auth/register'
+  const postUrl = 'https://reqres.in/api/users'
+  const getUrl='https://api.github.com/users/octocat'
+  const dummyDataUrl = 'https://spotify-song-suggester-4.herokuapp.com/dummy_data'
+  const localServerUrl = 'http://localhost:4000/api/auth/register'
 
 
   const postSearch = search => {
@@ -280,4 +286,20 @@ export default function App() {
     </div>
   );
 }
+
+const mapStateToProps = state => {
+  return {
+    users: state.spotify.users, 
+    favorites: state.spotify.favorites, 
+    isRendering: state.spotify.isRendering, 
+    error: state.spotify.error, 
+  }
+}
+
+export default connect(
+  mapStateToProps, 
+  { fetchUser }
+)(App); 
+
+
 
