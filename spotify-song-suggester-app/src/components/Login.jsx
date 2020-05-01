@@ -13,6 +13,9 @@ import Container from '@material-ui/core/Container';
 import { Link as RouterLink, Router } from 'react-router-dom'
 import axios from 'axios'
 
+import { useHistory } from 'react-router-dom'; 
+
+
 import { axiosWithAuth } from '../utils/axiosWithAuth'; 
 
 
@@ -80,12 +83,21 @@ export default function SignIn(props) {
 
   const classes = useStyles();
 
-  // const logginIn = e => {
-  //   e.preventDefault(); 
+  const history = useHistory(); 
 
-  //   axiosWithAuth() 
-  //   .post('/login', )
-  // }
+  const logginIn = e => {
+    e.preventDefault(); 
+
+    axiosWithAuth() 
+    .post('/auth/login', values)
+    .then(res => {
+      localStorage.setItem('token', JSON.stringify(res.data.payload)); 
+      history.push('/home'); 
+    })
+    .catch(err => {
+      console.log(err); 
+    })
+  }
 
   return (
     <Container className={classes.container} component="main" maxWidth="xs">
@@ -97,7 +109,7 @@ export default function SignIn(props) {
         <Typography component="h1" variant="h5">
           Log in
         </Typography>
-        <form className={classes.form} noValidate>
+        <form onSubmit={logginIn} className={classes.form} noValidate>
           <TextField
             variant="outlined"
             margin="normal"
@@ -126,11 +138,13 @@ export default function SignIn(props) {
           />
          
           <Button
+            // onClick={logginIn}
             type="submit"
             fullWidth
             variant="contained"
             color="inherit"
             className={classes.submit}>
+            
               Log In
           </Button>
           <Grid container>
