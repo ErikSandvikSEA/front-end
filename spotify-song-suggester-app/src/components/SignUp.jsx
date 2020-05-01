@@ -54,6 +54,8 @@ const useStyles = makeStyles((theme) => ({
           boxShadow: '0 5px 5px rgba(0,0,0,0.1)',
           marginTop: '5%',
           transition: 'all 0.3s linear',
+          marginBottom: '15%',
+
      },
      linkButtons: {
           textDecoration: 'none',

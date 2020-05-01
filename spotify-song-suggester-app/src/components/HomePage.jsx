@@ -14,22 +14,12 @@ import { Link as RouterLink } from 'react-router-dom'
 import TextField from '@material-ui/core/TextField';
 import logo from './logo/logo.png'
 import { NavLink } from 'react-router-dom'
+import * as yup from 'yup'
 
 
 
 
-function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {'Copyright © '}
-      <Link color="inherit" href="https://material-ui.com/">
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
+
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
@@ -87,7 +77,11 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-  }
+  },
+  errorMessages: {
+    fontWeight: 'bolder',
+    color: '#1DB954',
+}
 }));
 
 
@@ -96,6 +90,8 @@ export default function HomePage(props) {
     searchFormValue,
     onSearch,
     onSearchInputChange,
+    errors,
+    disabled
   } = props
 
   const classes = useStyles();
@@ -130,7 +126,7 @@ export default function HomePage(props) {
                 <Grid item>
                   
                  
-                    <Button onClick={onSearch} className='searchButtons' variant="contained" color="primary">
+                    <Button onClick={onSearch} disabled={disabled} className='searchButtons' variant="contained" color="primary">
                     <RouterLink style={{ textDecoration: 'none', color:'white' }} className='searchButtons' to='/home/search'>
                       Search For New Songs
                       </RouterLink>
@@ -143,6 +139,11 @@ export default function HomePage(props) {
                     Secondary action
                   </Button>
                 </Grid>
+                <div className='errors'>
+                              <h3  className={classes.errorMessages} value={errors.song}>{errors.song}</h3>
+
+                              <h3   className={classes.errorMessages} value={errors.artist}>{errors.artist}</h3>
+                         </div>
                
               </Grid>
             </div>
@@ -153,17 +154,7 @@ export default function HomePage(props) {
           <DisplaySearched />
         </Route>
       </main>
-      {/* Footer */}
-      <footer className={classes.footer} >
-        <Typography variant="h6" align="center" gutterBottom >
-          Footer
-        </Typography>
-        <Typography variant="subtitle1" align="center"  component="p">
-          Something here to give the footer a purpose!
-        </Typography>
-        <Copyright />
-      </footer>
-      {/* End footer */}
+     
     </React.Fragment>
   );
 }

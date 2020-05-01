@@ -54,6 +54,7 @@ const useStyles = makeStyles((theme) => ({
      borderRadius: '7px',
      boxShadow:'0 5px 5px rgba(0,0,0,0.1)',
      marginTop: '5%',
+     marginBottom: '15%',
 
      transition:'all 0.3s linear',
   },

@@ -77,7 +77,9 @@ const useStyles = makeStyles((theme) => ({
 const cards = [1, 2, 3, 4, 5, 6];
 const getUrl = 'https://api.github.com/users/octocat'
 const dummyDataUrl = 'https://spotify-song-suggester-4.herokuapp.com/dummy_data'
-export default function DisplaySearched() {
+export default function DisplaySearched(props) {
+
+     const {searches} = props
      const classes = useStyles();
 
      const [songInfo, setSongInfo] = useState([])
@@ -89,48 +91,55 @@ export default function DisplaySearched() {
                .then(response => {
                     // console.log('working')
                     // console.log(response.data)
-                    setSongInfo(response.data)
+                    setSongInfo([response.data])
                })
                .catch(err => {
                     console.log('error',)
                })
      }, []
      )
-     if (!songInfo.length) {
+     let sampleArray = []
+     for(let obj in searches){
+          sampleArray.push(searches[obj])
+     }
+     if (!sampleArray.length) {
           return (
                <div className={classes.root}>
                     <CircularProgress />
                </div>
           )
      }
+     
+     console.log(sampleArray)
+     // console.log(searches)
      return (
           <Container className={classes.cardGrid} maxWidth="md">
                <CssBaseline />
                <Grid container spacing={7}>
-                    {songInfo.map((specificSongInfo, idx) => (
+                    {sampleArray.map((specificSongInfo, idx) => (
                          <Grid item key={idx} xs={12} sm={6} md={4}>
                               <Card className={classes.card}>
                                    <CardMedia
                                         className={classes.cardMedia}
-                                        image={specificSongInfo.cover_art}
+                                        image={specificSongInfo.album_cover}
                                         title="Image title"
                                    />
                                    <CardContent className={classes.cardContent}>
                                         <Typography gutterBottom variant="h4" component="h2" className={classes.textMargin}>
-                                             {specificSongInfo.song}
+                                             {specificSongInfo.track_name}
                                         </Typography>
                                         <Typography variant='h6' className={classes.textMargin}>
                                              {specificSongInfo.artist}
                                         </Typography>
                                         <Typography className={classes.textMargin}>
-                                             {specificSongInfo.album}
+                                             {specificSongInfo.album_name}
                                         </Typography>
                                         <Button variant='contained' className={classes.addToFavorites}>
                                              Add to Favorites
                                         </Button>
                                    </CardContent>
                                    <CardActions>                                        
-                                        <iframe src={`https://embed.spotify.com/?uri=spotify:track:${specificSongInfo.song_id}&view=coverart&theme=black`} height='55%' width='100%'></iframe>
+                                        <iframe src={`https://embed.spotify.com/?uri=spotify:track:${specificSongInfo.track_id}&view=coverart&theme=black`} height='55%' width='100%'></iframe>
                                    </CardActions>
                               </Card>
                          </Grid>
