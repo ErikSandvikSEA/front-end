@@ -1,6 +1,7 @@
 const initialState = {
     users: [], 
     favorites: [], 
+    suggestions: [],
     isRendering: false, 
     error: '', 
 }
@@ -19,7 +20,7 @@ export const spotifyReducer = (state = initialState, action ) => {
                 isRendering:true,
             }
 
-        case 'RENDERING_FAVORITES_START': 
+        case 'RENDERING_SUGGESTIONS_START': 
             return {
                 ...state, 
                 isRendering: true, 
@@ -41,10 +42,10 @@ export const spotifyReducer = (state = initialState, action ) => {
                 error: ''
             }
 
-        case 'RENDERING_FAVORITES_SUCCESS': 
+        case 'RENDERING_SUGGESTIONS_SUCCESS': 
             return {
                 ...state, 
-                favorites: action.payload, 
+                suggestions: action.payload, 
                 isRendering: false, 
                 error: '', 
             }
@@ -61,7 +62,7 @@ export const spotifyReducer = (state = initialState, action ) => {
                 error: action.payload,
             }
 
-        case 'RENDERING_FAVORITES_FAILED':
+        case 'RENDERING_SUGGESTIONS_FAILED':
             return {
                 ...state, 
                 error: action.payload

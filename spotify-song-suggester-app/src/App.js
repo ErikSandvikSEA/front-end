@@ -25,7 +25,7 @@ import Suggestions from './components/menuComponents/Suggestions'
 
 import { connect } from 'react-redux'; 
 
-import { fetchUser } from './components/store/actions/SpotifyActions'; 
+import { fetchUser, fetchSuggestions } from './components/store/actions/SpotifyActions'; 
 
 import { useHistory } from 'react-router-dom'
 
@@ -137,10 +137,10 @@ function App(props) {
   const [formErrors, setFormErrors] = useState(initialFormErrors)
   const [formDisabled, setFormDisabled] = useState(true)
   const [searchFormValue, setSearchFormValue ] = useState(initialSearchFormValue)
-  const [searches, setSearches] = useState({})
+  // const [searches, setSearches] = useState({})
   const [searchFormErrors, setSearchFormErrors] = useState(initialSearchFormErrors)
   const [searchFormDisabled, setSearchFormDisabled] = useState(true)
-
+  const [favorite, setFavorite] = useState([])
   const [newSearch, setNewSearch] = useState({})
   const history = useHistory()
 
@@ -180,16 +180,16 @@ function App(props) {
   // }
 
 
-  const getSearch = search => {
-    axios.get(`https://spotify-song-suggester-4.herokuapp.com/search_something/${search.artist}/${search.song}`)
-      .then(response => {
-        console.log(response.data)
-        setSearches(response.data)
-      })
-      .catch(err => {
-        console.log(err)
-      })
-  }
+  // const getSearch = search => {
+  //   axios.get(`https://spotify-song-suggester-4.herokuapp.com/search_something/${search.artist}/${search.song}`)
+  //     .then(response => {
+  //       console.log(response.data)
+  //       setSearches(response.data)
+  //     })
+  //     .catch(err => {
+  //       console.log(err)
+  //     })
+  // }
 
 
 
@@ -304,9 +304,12 @@ function App(props) {
     //  )
     history.push('/home/search')
     console.log(newSearch)
-    getSearch(searchFormValue)
+    props.fetchSuggestions(searchFormValue)
+    console.log(props.favorites,'this is favorites')
     setSearchFormValue(initialSearchFormValue)
   }
+
+  console.log(props)
   const classes = useStyles();
   return (
 
@@ -335,6 +338,7 @@ function App(props) {
            <Favorites
             values={formValues}
             onInputChange={onInputChange}
+            favorite={favorite}
            />
       </Route>
       {/* <Route exact path='/home/search'>
@@ -345,7 +349,8 @@ function App(props) {
       
       <Route  path='/home/search' >
           <DisplaySearched
-          searches={searches}
+          searches={props.suggestions}
+          setFavorite={setFavorite}
           
           />
         </Route>
@@ -388,7 +393,7 @@ function App(props) {
 const mapStateToProps = state => {
   return {
     users: state.spotify.users, 
-    favorites: state.spotify.favorites, 
+    suggestions: state.spotify.suggestions, 
     isRendering: state.spotify.isRendering, 
     error: state.spotify.error, 
   }
@@ -396,7 +401,7 @@ const mapStateToProps = state => {
 
 export default connect(
   mapStateToProps, 
-  { fetchUser }
+  { fetchUser, fetchSuggestions }
 )(App); 
 
 
