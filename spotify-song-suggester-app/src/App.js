@@ -27,6 +27,7 @@ import { connect } from 'react-redux';
 
 import { fetchUser } from './components/store/actions/SpotifyActions'; 
 
+import { useHistory } from 'react-router-dom'
 
 import { v4 as uuid } from 'uuid'
 
@@ -141,7 +142,7 @@ function App(props) {
   const [searchFormDisabled, setSearchFormDisabled] = useState(true)
 
   const [newSearch, setNewSearch] = useState({})
-
+  const history = useHistory()
 
 
   // useEffect(() => {
@@ -256,53 +257,54 @@ function App(props) {
     })
   }
 
-  const validateChange = e => {
 
+  const onSearchInputChange = e => {
+    const searchName = e.target.name
+    const searchValue = e.target.value
+  
     yup
-    .reach(searchFormSchema, e.target.name)
-    .validate(e.target.value)
+    .reach(searchFormSchema, searchName)
+    .validate(searchValue)
     .then(valid => {
       //clear errors
       setSearchFormErrors({
         ...searchFormErrors,
-        [e.target.name]: '',
+        [searchName]: '',
       })
     })
     .catch(err => {
       setSearchFormErrors({
         ...searchFormErrors,
-        [e.target.name]: err.errors[0]
+        [searchName]: err.errors[0]
       })
     })
-  }  
-
-
-  const onSearchInputChange = e => {
-    // const searchName = e.target.name
-    // const searchValue = e.target.value
-    e.persist(); 
-
-    const newSongSearch = {
-      ...searchFormValue, 
-      [e.target.name]: e.target.value
-    }
-  
-    validateChange(e); 
-    setSearchFormValue(newSongSearch)
-    console.log('the search form', searchFormValue)
+    setSearchFormValue({
+      ...searchFormValue,
+      [searchName]: searchValue,
+    })
+    console.log(searchFormValue)
 
   }
 
+
+
+  useEffect(() => {
+    setSearchFormValue(
+      searchFormValue
+    )
+    console.log(searchFormValue)
+  },[searchFormValue])
+  
   const onSearch = e => {
     e.preventDefault()
-     setNewSearch({
-      song: searchFormValue.song.replace('/\s/', '%20'),
-      artist: searchFormValue.artist.replace('/\s/', '%20')
-     }
-     )
-    
+    //  setNewSearch({
+    //   song: searchFormValue.song.replace('/\s/', '%20'),
+    //   artist: searchFormValue.artist.replace('/\s/', '%20')
+    //  }
+    //  )
+    history.push('/home/search')
     console.log(newSearch)
-    getSearch(newSearch)
+    getSearch(searchFormValue)
     setSearchFormValue(initialSearchFormValue)
   }
   const classes = useStyles();
@@ -338,19 +340,23 @@ function App(props) {
       {/* <Route exact path='/home/search'>
           <DisplaySearched />
         </Route> */}
-        <Route exact path='/home/search'>
+
+        
+      
+      <Route  path='/home/search' >
           <DisplaySearched
           searches={searches}
           
           />
         </Route>
-      <Route  path='/home'>
+        <Route exact path='/home'>
         <HomePage 
           searchFormValue={searchFormValue}
           onSearch={onSearch}
           onSearchInputChange={onSearchInputChange}
           errors={searchFormErrors}
           disabled={searchFormDisabled}
+          initialSearchFormValue={initialSearchFormValue}
         />
       </Route>
 

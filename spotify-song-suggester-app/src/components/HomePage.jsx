@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
 import Headset from '@material-ui/icons/Headset'; import CssBaseline from '@material-ui/core/CssBaseline';
@@ -15,6 +15,7 @@ import TextField from '@material-ui/core/TextField';
 import logo from './logo/logo.png'
 import { NavLink } from 'react-router-dom'
 import * as yup from 'yup'
+import { useHistory } from 'react-router-dom'
 
 
 
@@ -127,9 +128,7 @@ export default function HomePage(props) {
                   
                  
                     <Button onClick={onSearch} disabled={disabled} className='searchButtons' variant="contained" color="primary">
-                    <RouterLink style={{ textDecoration: 'none', color:'white' }} className='searchButtons' to='/home/search'>
                       Search For New Songs
-                      </RouterLink>
                   </Button>
                   
 
@@ -150,11 +149,12 @@ export default function HomePage(props) {
           </Container>
         </div>
         {/* end hero unit */}
-        <Route exact path='/home/search'>
-          <DisplaySearched />
-        </Route>
+        
       </main>
-     
+      {/* <Route path='/home/search'>
+      <DisplaySearched />
+      </Route> */}
+      <DisplaySearched />
     </React.Fragment>
   );
 }
