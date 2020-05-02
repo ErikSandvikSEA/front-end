@@ -302,7 +302,7 @@ export default function App() {
     //   artist: searchFormValue.artist.replace('/\s/', '%20')
     //  }
     //  )
-    history.push('/home/search')
+    history.push('/search')
     console.log(newSearch)
     getSearch(searchFormValue)
     setSearchFormValue(initialSearchFormValue)
@@ -327,29 +327,29 @@ export default function App() {
           onInputChange={onInputChange}
         
         />
-      </Route>
-      <Route exact path='/favorites/suggestions'>
+     </Route>
+      {/* <Route exact path='/favorites/suggestions'> 
            <Suggestions />
-      </Route>
-      <Route exact path='/favorites'>
+      </Route> */}
+      {/* <Route exact path='/favorites'>
            <Favorites
             values={formValues}
             onInputChange={onInputChange}
            />
-      </Route>
+      </Route> */}
       {/* <Route exact path='/home/search'>
           <DisplaySearched />
         </Route> */}
 
         
       
-      <Route  path='/home/search' >
+      <Route  path='/search' >
           <DisplaySearched
           searches={searches}
           
           />
         </Route>
-        <Route exact path='/home'>
+        <Route exact path='/'>
         <HomePage 
           searchFormValue={searchFormValue}
           onSearch={onSearch}
@@ -360,12 +360,12 @@ export default function App() {
         />
       </Route>
 
-      <Route exact path='/'>
+      {/* <Route exact path='/'>
            <Login
             values={formValues}
             onInputChange={onInputChange}
            />
-      </Route>
+      </Route> */}
      
 
     
